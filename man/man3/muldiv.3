@@ -1,0 +1,71 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH MULDIV 3R
+.XE "muldiv()"
+.SH NAME
+muldiv \- calculate (a*b)/c accurately
+.SH SYNOPSIS
+.ft B
+int muldiv (a, b, c)
+.br
+int a, b, c;
+.SH DESCRIPTION
+The
+.I muldiv
+function
+is a macro that returns the 32-bit result
+.IR (a*b)/c .
+.I (a*b)
+is calculated to 32 bits to mimimize the precision lost.
+The
+.I muldiv
+function
+is convenient for calculating transformations.
+.SH EXAMPLE
+To calculate, for example, the mathematical expression:
+.ft CM
+.sp
+.ce
+x = x0*cos (d)
+.sp
+.ft R
+To calculate a projection the multiplication must be scaled:
+.sp
+.ce
+.ft CM
+x = muldiv (x0, cos(d), 1024)
+.sp
+.ft R
+.PP
+Another example is the code for \f2jeldisc\f1.
+.PP
+.RS 0
+.nf
+.ft CM
+#include <dmd.h>
+
+void
+jeldisc(p, a, b, f)
+Point p;
+int a, b, f;
+{
+   eldisc (&display, transform(p), muldiv(a,
+        Drect.corner.x-Drect.origin.x, XMAX),
+      muldiv(b,
+        Drect.corner.y-Drect.origin.y, YMAX),
+      f);
+}
+\fR
+.fi
+.RE
+.SH SEE ALSO
+trig(3L).

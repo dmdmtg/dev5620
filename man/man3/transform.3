@@ -1,0 +1,83 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH TRANSFORM 3R
+.XE "transform()"
+.XE "rtransform()"
+.SH NAME
+transform, rtransform \- screen to layer coordinates
+.SH SYNOPSIS
+.ft B
+Point transform(p) 
+.br
+Point p;
+.sp .5
+Rectangle rtransform(r)
+.br
+Rectangle r;
+.SH DESCRIPTION
+The
+.I transform
+function
+returns the layer coordinates of its argument screen coordinate Point
+.IR p .
+.PP
+The
+.I rtransform
+function
+returns the layer coordinates of its argument screen coordinate Rectangle
+.IR r .
+.PP
+The
+.I transform
+and
+.I rtransform
+calls
+are not defined for programs running
+.BR standalone .
+.SH EXAMPLE
+The following code will obtain the screen coordinates of
+the PtCurrent used by the j-routines.
+.sp .5
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+Point p;
+transform(PtCurrent);\fR
+.fi
+.RE
+.PP
+The following two calls to \f2segment\f1 and \f2jsegment\f1 will create the
+same line.
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+Point p, q;
+    \^.
+.sp .5
+   p.x = 100;
+   p.y = 100;
+   q.x = 300;
+   q.y = 300;
+   jsegment (p,q,F_XOR);
+.sp .5
+    \^.
+    \^.
+   segment(&display, transform(p),
+		transform(q), F_XOR);\fR
+.fi
+.RE
+.SH SEE ALSO
+jsegment(3R),
+segment(3R).

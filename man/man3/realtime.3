@@ -1,0 +1,58 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH REALTIME 3R
+.XE "realtime()"
+.SH NAME
+realtime \- wall clock
+.SH SYNOPSIS
+\f3
+long realtime ( ); 
+\fR
+.SH DESCRIPTION
+The
+.I realtime
+function
+returns the number of 60Hz clock ticks since
+.I layers
+was booted.
+There is no
+.I realtime
+call in the 
+stand-alone 
+world.
+.SH SEE ALSO
+bitblt(1), layers(1).
+.SH EXAMPLE
+The following code could be used to roughly measure the performance
+of \f2bitblt\f1.
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+
+perf_bitblt( sb, r, db, p, f)
+Bitmap *sb, *db;
+Rectangle r;
+Point p;
+Code f;
+{
+	long begin;
+
+	begin = realtime ();
+	bitblt (sb, r, db, p, f);
+	return (realtime () - begin);
+}
+\fR
+.fi
+.RE
+.ft R

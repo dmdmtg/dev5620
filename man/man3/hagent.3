@@ -1,0 +1,243 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH HAGENT 3H
+.XE "openagent()"
+.XE "New()"
+.XE "Runlayer()"
+.XE "Current()"
+.XE "Delete()"
+.XE "Top()"
+.XE "Bottom()"
+.XE "Move()"
+.XE "Reshape()"
+.XE "Exit()"
+.XE "Newlayer()"
+.XE "openchan()"
+.SH NAME
+openagent, New, Runlayer, Current, Delete, Top, Bottom, Move, Reshape, Exit, Newlayer, openchan \- \s-1UNIX\s+1 system host commands to perform DMD functions
+.SH SYNOPSIS
+.B int	cntlfd, fd;
+.br
+.B int	chan;
+.br
+.B int	origin.x, origin.y, corner.x, corner.y;
+.br
+.B char	*command;
+.PP
+.B cntlfd \= openagent ( )
+.PP
+.B "chan \= New (cntlfd, origin.x, origin.y, corner.x, corner.y)"
+.PP
+.B Runlayer (chan, command)
+.PP
+.B Current (cntlfd, chan)
+.PP
+.B Delete (cntlfd, chan)
+.PP
+.B Top (cntlfd, chan)
+.PP
+.B Bottom (cntlfd, chan)
+.PP
+.B Move (cntlfd, chan, origin.x, origin.y)
+.PP
+.B Reshape (cntlfd, chan, origin.x, origin.y, corner.x, corner.y)
+.PP
+.B Exit (cntlfd)
+.PP
+.B "chan \= Newlayer (cntlfd, origin.x, origin.y, corner.x, corner.y)"
+.PP
+.B fd \= openchan (chan)
+.SH DESCRIPTION
+These routines allow a \s-1UNIX\s+1 system host program to
+issue all the commands available in the
+``button 3'' menu of \fIlayers\fR.
+For those routines that pass layer rectangle coordinates, it should
+be noted that the minimum layer size is 32 by 32 pixels.
+.PP
+The
+.I openagent
+function opens the DMD control channel. Upon successful completion,
+.I openagent
+returns a file descriptor that is used
+as input to all routines except
+.IR openchan .
+Otherwise, the EOF value is returned.
+.PP
+The
+.I New
+function
+creates a new layer with a separate shell.
+The
+.IR origin.x ,
+.IR origin.y ,
+.IR corner.x ,
+and
+.I corner.y
+arguments
+are the coordinates of the layer rectangle.
+If all the coordinate arguments are 0,
+the sweep cursor is displayed and the user is allowed to
+sweep out the layer's rectangle.
+The layer appears on top
+of any overlapping layers.
+The layer is ``not'' made current (i.e., the keyboard
+is not attached to the new layer).
+Upon successful completion,
+.I New
+returns the DMD channel associated with the layer.
+Otherwise, the EOF value is returned.
+.PP
+The
+.I Runlayer
+function
+runs
+the argument
+.I command
+in the layer associated with the channel
+argument
+.IR chan .
+The layer must be created with the
+.I New
+function.
+.PP
+The
+.I Current
+function
+makes the layer associated with the channel
+argument
+.I chan
+current (i.e., attached to the keyboard).
+.PP
+The
+.I Delete
+function
+deletes the layer associated with the channel
+argument
+.I chan
+and kills all host processes associated with the layer.
+.PP
+The
+.I Top
+function
+makes the layer associated with the channel
+argument
+.I chan
+appear on top of all overlapping layers.
+.PP
+The
+.I Bottom
+function
+puts the layer associated with the channel
+argument
+.I chan
+under all overlapping layers.
+.PP
+The
+.I Move
+function
+moves the layer associated with the channel
+argument
+.I chan
+from its current screen location to a new screen location at the origin
+point
+.RI ( origin.x , " origin.y" ).
+The size and contents of the layer are maintained. 
+.PP
+The
+.I Reshape
+function
+reshapes the layer associated with the channel
+argument
+.IR chan .
+The
+arguments
+.IR origin.x ,
+.IR origin.y ,
+.IR corner.x ,
+and
+.I corner.y
+are the new coordinates of the layer rectangle.
+If all the coordinate arguments are 0,
+the sweep cursor is displayed and the user is allowed to
+sweep out the layer's rectangle.
+The contents of the layer will not be maintained.
+.PP
+The
+.I Exit
+function
+exits the
+layers
+program and kills all processes associated with
+layers.
+.PP
+The
+.I Newlayer
+function
+creates a new layer.
+The
+arguments
+.IR origin.x ,
+.IR origin.y ,
+.IR corner.x ,
+and
+.I corner.y
+are the coordinates of the layer rectangle.
+If all the coordinate arguments are 0,
+the sweep cursor is displayed and the user is allowed to
+sweep out the layer's rectangle.
+The layer appears on top
+of any overlapping layers.
+The layer is ``not'' made current (i.e., the keyboard
+is not attached to the new layer).
+Upon successful completion,
+.I Newlayer
+returns the DMD channel associated with the layer.
+Otherwise, the EOF value is returned.
+.PP
+The
+.I openchan
+function
+opens the channel argument
+.I chan
+which is obtained from the
+.I New
+or
+.I Newlayer
+function.
+Upon successful completion,
+.I openchan
+returns a file descriptor that can be used
+as input to
+.IR write (2).
+Otherwise, the EOF value is returned.
+.SH NOTES
+The file descriptors obtained from the
+.I openagent
+and
+.I openchan
+functions
+may be closed using
+.IR close (2).
+.SH RETURN VALUE
+Upon successful completion,
+all routines except
+.IR openagent ,
+.IR openchan ,
+.IR New ,
+and
+.I Newlayer
+return a value of 0. 
+If an error occurs, a value of 1 is returned.
+.SH SEE ALSO
+jagent(7H), agent(3R).
+.br
+write(2), close(2) in the \fI\s-1UNIX\s+1 System V Programmer Reference Manual\fR.

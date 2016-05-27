@@ -1,0 +1,84 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH ALLOC 3R
+.XE "alloc()"
+.XE "free()"
+.SH NAME
+alloc, free \- memory allocator
+.SH SYNOPSIS
+.B char *alloc (nbytes)
+.br
+.B unsigned nbytes;
+.PP
+.B void free (s)
+.br
+.B char *s;
+.SH DESCRIPTION
+The
+.I alloc
+function
+corresponds to the standard C function
+.I malloc.
+It either returns a pointer to a block of
+.I nbytes
+contiguous bytes of storage
+or a 0 (\s-1NULL\s+1) if unavailable.
+The storage is aligned on 4-byte boundaries.
+Unlike
+.IR malloc ,
+.I alloc
+clears the storage to zeros.
+.PP
+The
+.I free
+function
+frees storage allocated by
+.I alloc.
+.PP
+If a program does not free the memory allocated or if its layer
+is deleted,
+.I layersys
+automatically frees the memory when the layer is deleted.
+However, it is recommended that a program free its allocated
+memory when the storage is no longer needed so that other
+processes operating under
+.I layers
+will be able to use it.
+.SH EXAMPLE
+The following example shows the use of
+.I alloc
+and
+.I free
+in dynamically allocating memory for a \fIPoint\fR.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+Point *p;
+
+main()
+{
+    p = (Point *) alloc (sizeof(Point));
+
+    .
+    .
+    .
+
+    free (p);
+}
+.fi
+.ft R
+.RE
+.SH SEE ALSO
+balloc(3R), gcalloc(3R).

@@ -1,0 +1,311 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ CORE PACKAGE
+.TH DMDP 1
+.SH NAME
+dmdp \- printer support for DMD 5620 terminals 
+.SH SYNOPSIS
+.B \f2dmdp\f1 
+printer_type
+.SH DESCRIPTION
+The
+.I \f2dmdp\f1 
+utility
+is a printer program which allows the user to send screen and host data from
+a DMD 5620 to a locally attached printer.
+The
+.IR \f2dmdp\f1 
+utility
+runs only under 
+.IR layers (1),
+and when the program is completely
+downloaded, a picture of a printer will appear.
+.PP
+In order to view the messages at the bottom of the \f2dmdp\f1 layer,
+it is recommended that the layer
+must be at least one-quarter of the screen wide. 
+.TP 15
+.I printer_type
+The printer_type argument specifies the type of printer attached to
+the DMD 5620.  
+Currently supported printers are:
+.RS 5
+.TP 14
+\fB5310\fR or \fB5320\fR
+for the Teletype 5310 or Teletype 5320 printers,
+respectively.
+.TP
+\fB8510B\fR
+for the C. Itoh 8510b printer.
+.TP
+\fBthinkjet\fR
+for the Hewlett Packard HP 2225 ThinkJet printer.
+.TP
+\fBtransparent\fR
+for transparently sending input from the host, 
+through the 5620,
+to any printer or other RS-232 device.
+When this option is used, the \fBScreen\fR option (below) will not be available.
+Input is transparently passed through the 5620 to the RS-232 device with
+no processing of tabs, or insertion or monitoring of escape sequences.
+The host must insert delays, if necessary, to compensate for lack of flow control.
+The RS-232 device must be set to eight bits per character plus even
+parity.
+.RE
+.PP
+The printer should be connected 
+to the send only port (Port B) on the back of the DMD 5620.
+Port B should be set to 9600 baud through terminal setup.
+It will be necessary to option your printer before using 
+.I
+dmdp
+for the first time.  Printer options for the supported printers are listed
+in the "5620 Dot-Mapped Display Terminal User Guide Release 2.0."
+.PP
+The
+\f2dmdp\f1 utility is a menu driven program. There are two general types of menus,
+\fBaction\fR menus accessible from button 3 and a \fBsetup\fR menu accessible
+from button 2. Action menus are used to initialize the 5620 for printing,
+and to start and stop printing. Setup menus are used to set optional
+characteristics of the printer and the printed output.
+.P
+The button 2 setup menu is only available before the printer is turned
+on. This is before \fBPrint\fR is chosen in \fBScreen\fR mode or
+\fBPrinter On\fR is chosen in \fBHost\fR mode.
+The button 2 setup menu is not available if the printer type
+is \fBTransparent\fR.
+.SH "MOUSE BUTTON 2 SETUP MENU"
+.P
+The setup menu is used to set optional
+characteristics of the printer and the printed output. It also provides
+tools for sizing graphical pictures to fit onto a printed page.
+The exact contents of the button 2 setup menu
+will vary depending upon the printer
+specified on the \f2dmdp\f1 command line, since some of the options are printer
+specific. 
+When a setup item consists of the choosing between a number of options,
+the currently selected option will be pointed to by an arrow \fB(>)\fR.
+Each option in the Setup menu is marked by an \fB(S)\fR, \fB(H)\fR or \fB(SH)\fR,
+which specifies which printing modes(s)
+it applies to; screen, host, or both, respectively.
+A different option can be selected by moving the mouse cursor to the desired option
+and releasing button 2.
+The options are remembered for the current \f2dmdp\f1 session, until \f2dmdp\f1 is exited.
+.TP 20
+\fBShow Printer Page\fR
+shows what part of the 5620 screen 
+will fit onto one printed page, 
+both in width and length, by forming an outline on the screen.
+This outline can be moved with the mouse, and will disappear when any
+mouse button is clicked.
+.TP
+\fBReshape to Page\fR
+reshape a layers window to the largest 
+possible size that can fit on one printed page.
+When this option is chosen, the mouse cursor will be changed to a target.
+The target should be positioned within the layer to be reshaped, and then button 3
+should be clicked.
+.TP
+\fBCenter\fR
+the printed output will be centered in both the
+vertical and horizontal directions on the printed page.
+In order for vertical centering to work properly,
+the paper in the printer must be
+formfed before printing is started.
+In order for horizontal centering to work properly, the paper in the printer
+must be centered properly.
+.TP
+\fBNo Center\fR
+the printed output will start at the left hand 
+border of the page at the current position of the print head.
+This may yield faster printing and is
+intended for draft copies.
+.TP
+\fBOffscreen Copy\fR
+\f2dmdp\f1 will attempt to copy the screen area
+to be printed into offscreen memory before printing is started.
+If the copy succeeds, all terminal operations are unlocked and everything
+can proceed as normal, including modification of the area being printed,
+while printing is occurring. The area to be printed, highlighted in reverse
+video, will be changed to normal video before printing starts.
+.TP
+\fBNo Offscreen Copy\fR
+no offscreen copy will be attempted,
+and the progress
+of printing can be monitored by watching inverse video turn into normal
+video on the 5620 screen.
+.TP
+\fBDensity\fR
+this allows a user to change both the horizontal
+and vertical densities (Dots Per Inch) for the printer from
+the default value.
+.TP
+\fBPrint Quality\fR
+used to set printer specific print 
+qualities,
+usually Draft Quality and Final Quality.
+In general, the tradeoff is print quality as compared to print speed.
+.TP
+\fBPaper Width\fR
+available only if the printer specified on the
+command line can use paper of different widths.
+The two options are "Wide Paper," and "Narrow Paper."
+.SH "MOUSE BUTTON 3 ACTION MENUS"
+The main menu is displayed the first time button 3 is pressed
+after \f2dmdp\f1 is downloaded, and is
+the menu that is always returned to when printing is completed.
+The main menu can also be returned to from any sub-menu by choosing
+the \fBMain Menu\fR item.
+.SH "Main Menu"
+.TP 15
+\fBScreen\fR
+print a portion of the 5620 screen.
+.TP
+\fBHost\fR
+print incoming traffic from the host computer.
+It is usually used to print text.
+.TP
+\fBExit\fR
+exit the \f2dmdp\f1 program.
+.SH "Screen Option"
+.SS "First Level Sub-menus under the Screen Option"
+.P
+When \fBScreen\fR is chosen in the main menu, a sub-menu
+is available with button 3. This menu allows the user to pick the area
+of the screen to be printed.
+When an area is picked, a number of actions occur:
+.AL
+.LI
+The area that \fBwill actually be
+printed\fR becomes highlighted in reverse video on the 5620 screen.
+Note
+that the area to be printed can be smaller than the area picked
+because of differences in print density between the 5620 screen and
+the printer, as discussed in section 2.
+.LI
+The \f2dmdp\f1 layer becomes locked
+in the terminal and cannot be deleted until control is returned to
+either the main menu or this first level menu under the screen option.
+If an attempt is made to delete the \f2dmdp\f1 layer when it is locked in the
+terminal, the layer will momentarily flash.
+.LI
+If the area to be printed is contained within a single layer, all
+activity in that layer will be halted.
+If the area to be printed is not contained within a single layer, 
+all activity on the 5620 screen will be halted, and the entire terminal will 
+be dedicated to \f2dmdp\f1.
+.TP 15
+\fBSelect Layer\fR
+allows a layer to be selected as the target
+area.  The mouse cursor (now a target) should be positioned within 
+the layer to be selected,
+and then button 3 should be clicked.
+.TP
+\fBSweep Rectangle\fR
+allows any screen rectangle to be 
+selected as the target area.
+The method used to sweep the rectangle is identical to that of 
+creating a new layers window.
+.TP
+\fBWhole Screen\fR
+selects the entire screen as the target area.
+.TP
+\fBMain Menu\fR
+return \f2dmdp\f1 to the main menu.
+.SH "Second Level Sub-menus under the Screen Option"
+.TP 15
+\fBPrint\fR 
+This will cause printing to start. 
+As the area is printed, slices of the highlighted print area 
+will be changed to normal.
+.TP
+\fBMain Menu\fR
+return \f2dmdp\f1 to the main menu.
+.SH "Third Level Sub-menus under the Screen Option while Print is On"
+This menu is available while the print is on and before it is completed.
+.TP 15
+\fBPause\fR
+cause printing to pause.
+.TP
+\fBContinue\fR
+cause printing to continue.
+.TP
+\fBMain Menu\fR
+return \f2dmdp\f1 to the main menu.  
+Note that this also 
+has the effect of aborting printing.
+.SH "The Host Option"
+.PP
+When the \fBHost\fR option of the main menu is selected,
+the mouse cursor (now a target,) should be positioned within
+the layer where input is to be printed, and then button 3 should be
+clicked. When a layer is selected in this manner, the \f2dmdp\f1 layer becomes
+locked in the terminal and cannot be deleted until control is returned
+to the main menu.
+.PP
+There are three ways printing can be started:
+The first is to send an escape sequence from the host to the chosen layer.
+This is useful for printing without having
+print commands and prompts appear in the output. The escape sequences to turn
+the printer on and off are:
+.sp
+.RS 8
+.B "Printer On  - ESC[?4i"
+.br
+.B "Printer Off - ESC[?9i"
+.RE
+.sp
+These can be supplied by the \f2dmdcat\f1(1) program.
+.PP
+The second way to start printing is with the mouse, as explained below.
+.PP
+The third way is using
+.I dmdcat
+in another layer,
+.I dmdp
+can turn on the printer,
+.I cat
+a file,
+and turn off the printer.
+[See
+.IR dmdcat (1).]
+.SH "First Level Sub-menus under the Host Option"
+.TP 15
+\fBPrinter On\fR
+will cause all input to the chosen layer to also 
+be sent to the printer.
+.TP
+\fBMain Menu\fR
+return \f2dmdp\f1 to the main menu.
+.SH "Second Level Sub-menus under the Host Option while Print is On"
+.TP 15
+\fBPrinter Off\fR
+will stop input to the chosen layer from being
+sent to the printer.
+Control will be returned to the previous sub-menu, and the layer
+chosen when \fBHost\fR mode was first entered will remain chosen.
+.TP
+\fBMain Menu\fR
+return \f2dmdp\f1 to the main menu.  It will also
+stop input to the chosen layer from being sent to the printer.
+.SH FILES
+$DMD/lib/dmdp.m	executable of
+.I dmdp
+.br
+$DMD/bin/dmdp	shell script for executing
+.I dmdp
+.SH SEE ALSO
+dmdcat(1), layers(1).
+.br
+.IR "5620 Dot-Mapped Display Terminal User's Guide Release 2.0"
+.br
+cat(1) in the
+\f2\s-1UNIX\s+1 System V User Reference Manual\f1.

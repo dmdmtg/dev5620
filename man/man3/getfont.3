@@ -1,0 +1,100 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH GETFONT 3L
+.XE "infont()"
+.XE "getfont()"
+.XE "outfont()"
+.XE "ffree()"
+.SH NAME
+infont, getfont, outfont, ffree \- read a font from the \s-1UNIX\s+1 system
+.SH SYNOPSIS
+.B #include <font.h>
+.PP
+.B Font *infont (inch)
+.br
+.B int (*inch)( );  
+.PP
+.B Font *getfont (file) 
+.br
+.B char *file;
+.PP
+.B int outfont (f, ouch) 
+.br
+.B Font *f;
+.br
+.B int (*ouch)( );
+.PP
+.B void ffree (f)
+.br
+.B Font *f;
+.SH DESCRIPTION
+The
+.I infont
+function
+creates a Font by reading the byte-wise binary representation
+returned by successive calls to
+.IR inch .
+It returns
+.B "(Font *)0"
+on error.
+The
+argument routine
+.I inch
+argument
+must return successive bytes of the \s-1UNIX\s+1 system file representation
+of the font, and
+.B ((int)-1)
+at end-of-file.
+.PP
+The
+.I outfont
+function
+calls the routine
+.I ouch
+to write successive bytes of the binary representation of Font
+.IR f .
+The
+.I outfont
+function
+returns
+a \-1
+on error, as must
+the routine
+.IR ouch .
+.PP
+For programs running
+only
+under
+.IR jx ,
+.I getfont
+returns a pointer to a Font read from the named
+.IR file ,
+essentially by calling
+.I infont
+with argument routine
+.IR getc .
+The \fIgetfont\fR function also returns
+.B "((Font *)0)
+on error.
+.PP
+The
+.I ffree
+function
+frees a Font allocated by
+.I infont
+or
+.IR getfont .
+.SH EXAMPLE
+See the example for
+.IR string (3R).
+.SH SEE ALSO
+structures(3R).

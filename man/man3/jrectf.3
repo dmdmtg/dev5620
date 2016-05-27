@@ -1,0 +1,65 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH JRECTF 3R
+.XE "jrectf()"
+.SH NAME  
+jrectf \- rectangle function on display
+.SH SYNOPSIS
+.B void jrectf(r, f) 
+.PP 
+.B Rectangle r;
+.br
+.B Code f;
+.SH DESCRIPTION
+The
+.I jrectf
+function
+performs the action specified by the function Code
+.I f
+on the Rectangle
+.I r
+in the display Bitmap.
+The routine argument
+.I r
+is in layer coordinates.
+.SH EXAMPLE
+The following routine will ``doodle'' on the screen using a Rectangle,
+whose coordinates are scaled to the layer.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+rectdoodle()
+{
+     Rectangle r;
+     Point s;
+
+     s.x = 16;
+     s.y = 16;
+     request (MOUSE);
+     for (wait(MOUSE); !button3();
+          wait(MOUSE)){
+          r.origin = mouse.jxy;
+          r.corner = add (r.origin, s);
+          if( button1() )
+             jrectf (r, F_STORE);
+          if( button2() )
+             jrectf (r, F_CLR);
+     }
+}
+.fi
+.ft R
+.RE
+.SH SEE ALSO
+rectf(3R).

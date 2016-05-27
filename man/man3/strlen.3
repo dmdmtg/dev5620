@@ -1,0 +1,58 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH STRLEN 3R
+.SH NAME
+strlen \- length of character string
+.XE "strlen"
+.SH SYNOPSIS
+\f3
+int strlen (s)
+.br
+char *s;\f1
+.SH DESCRIPTION
+The
+.I strlen
+function
+returns the number of characters in
+.I s
+not including the terminating NULL character.
+.SH EXAMPLE
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+
+int   len;
+char *s = "This is an example";
+
+	.
+	.
+	.
+
+	len = strlen (s);
+\fR
+.fi
+.RE
+.PP
+The length of:
+.sp
+.ce
+.ft CM
+This is an example
+.ft R
+.sp
+is 18 characters and
+.I len
+will then equal 18.
+.SH SEE ALSO
+stringc(3L).

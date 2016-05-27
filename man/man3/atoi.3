@@ -1,0 +1,60 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH ATOI 3L
+.XE "atoi()"
+.SH NAME
+atoi \- convert string to integer
+.SH SYNOPSIS
+.B int atoi (s)
+.PP
+.B char *s;
+.SH DESCRIPTION
+The
+.I atoi
+function
+converts a decimal string
+.I s
+to an integer.
+Leading white-space characters, overflow conditions,
+and conversion stops at the first non-digit encountered are ignored.
+.SH EXAMPLE
+The following routine will read in from the keyboard
+a number typed by the user terminated by a carriage return.
+This routine handles backspace characters
+and also assumes that the \fI\s-1KBD\s+1\fR resource has been previously requested.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+getnum()
+{
+      char unum[100];
+      int i;
+
+      for( i=0; i<99; i++){
+         wait(KBD);
+         unum[i] = kbdchar();
+         if ( unum[i] == '\er' )
+            break;
+         if ( unum[i] == '\eb' && i>0 )
+            i -= 2;
+      }
+      unum[i+1] = '\e0';
+      return atoi (unum);
+}
+.fi
+.ft R
+.RE
+.SH SEE ALSO
+itox(3R).

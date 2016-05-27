@@ -1,0 +1,79 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH BITBLT 3R
+.XE "bitblt()"
+.SH NAME
+bitblt \- bit-block transfer
+.SH SYNOPSIS
+.ft B
+void bitblt(sb, r, db, p, f)
+.br
+Bitmap *sb, *db;
+.br
+Rectangle r;
+.br
+Point p;
+.br
+Code f;\fR
+.SH DESCRIPTION
+The
+.I bitblt
+function
+copies the data from Rectangle
+.I r
+in Bitmap
+.I sb
+to the congruent Rectangle with origin
+.I p
+in Bitmap
+.IR db .
+The nature of the copy is specified by the function Code
+.IR f .
+.PP
+The source and destination Bitmaps may be the same or different and
+the source and destination Rectangles may even overlap;
+.I bitblt
+always does the assignments in the correct order.
+.SH EXAMPLE
+In order to scroll a Rectangle
+.I r
+in a Bitmap
+.I b
+by
+.I n
+pixels,
+the following code could be used.
+.PP
+.RS 3
+.ft CM
+.nf
+\s-1
+#include <dmd.h>
+
+scroll(b, r, n)
+Bitmap *b;
+Rectangle r;
+{
+     Rectangle s;
+
+     s = r;
+     s.origin.y += n; /* scroll up */
+     bitblt (b, s, b, r.origin, F_STORE);
+     s.origin.y = r.corner.y - n; /* clear bottom */
+     rectf (b, s, F_CLR);
+}
+\s+1
+.fi
+.ft R
+.RE
+.SH SEE ALSO
+structures(3R).

@@ -1,0 +1,41 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH BITS 3R
+.XE "topbits"
+.XE "botbits"
+.SH NAME
+topbits, botbits \- bit masking arrays
+.SH SYNOPSIS
+.B long topbits\^[ ]
+.PP
+.B long botbits\^[ ]
+.SH DESCRIPTION
+The array
+.IR topbits [ i ]
+will reference a long in which the top
+.I i
+bits of the long are on and the remaining low bits are off.
+.PP
+The array
+.IR botbits [ i ]
+will reference a long in which the low
+.I i
+bits of the long are on and the remaining high bits are off.
+.SH EXAMPLE
+For example,
+.IR topbits [4]
+will equal
+0xf0000000
+and
+.IR botbits [4]
+will equal
+0x0000000f.

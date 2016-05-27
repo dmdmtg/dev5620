@@ -1,0 +1,82 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ CORE PACKAGE
+.TH DMDCAT 1
+.SH NAME
+dmdcat - send files to a printer used in conjunction with \f2dmdp\f1.
+.SH SYNOPSIS
+\fBdmdcat\fR [ \f3\-b\f1 ] [ file\&.\&.\&. ]
+.SH DESCRIPTION
+The
+.I dmdcat
+command is intended to be used
+in conjunction with
+.IR dmdp ,
+in order to send files to a printer.
+This
+command will send data to a 5620 terminal preceded by a \fIPrinter On\fR
+escape sequence and succeeded by a \fIPrinter Off\fR escape sequence.
+The escape sequences sent are:
+.RS 8
+.sp
+\fBPrinter On\fR  - ESC[?4i
+.sp
+\fBPrinter Off\fR - ESC[?9i
+.RE
+.sp
+It is used in conjunction with the \f2host\f1 option of \f2dmdp\f1(1).
+\f2Dmdcat\f1 will print the concatenation of files specified on it's
+command line, or it's standard input if no files are specified.
+.PP
+\f2Dmdcat\f1 has one option \fB\-\fR, which will strip backspaces
+from the output of \f2dmdcat\f1.
+If backspaces would result in two or more characters appearing
+in the same place, only the last character read will be output.
+This means that the printed output will appear exactly as it
+appears on the 5620 screen, without bold and underline.
+This option is useful for printers which either cannot process
+backspaces or are slow in processing backspaces.
+.PP
+To use
+.I dmdcat
+in conjunction
+with
+.IR dmdp ,
+refer to
+"The Host Option" section of
+.IR dmdp (1).
+First,
+.I dmdp
+must be running in another layer.
+Select the host option of the
+.I dmdp
+menu and point to this layer.
+Now,
+.I dmdp
+will capture the output from
+.I dmdcat
+and send the escape sequence to turn the printer off,
+.I cat
+the file to the printer,
+and turn the printer off.
+.SH DIAGNOSTICS
+\f2Dmdcat\f1 is a shell program which uses the \f2col\f1(1) command to
+strip backspaces with the \-b option.
+Col is not available on all \s-1UNIX\s+1
+systems.
+The \-b option will give 
+an error message if it cannot locate the \f2col\f1 command.
+.SH SEE ALSO
+dmdp(1).
+.br
+cat(1),
+col(1) in the
+\f2\s-1UNIX\s+1 System V User Reference Manual\f1.

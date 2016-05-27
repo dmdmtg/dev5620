@@ -1,0 +1,39 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH JMOVE 3R
+.XE "jmove()"
+.XE "jmoveto()"
+.SH NAME
+jmove, jmoveto \- move current point on display, relative or absolute
+.SH SYNOPSIS
+.B void jmove(p)
+.PP
+.B void jmoveto(p)
+.PP
+.B Point p;
+.SH DESCRIPTION
+The
+.I jmove
+function
+moves the current point by the relative vector
+.I p
+which is in layer coordinates.
+.PP
+The
+.I jmoveto
+function
+sets the current point to the absolute location
+.I p
+which is in layer coordinates.
+.SH EXAMPLE
+See the example in
+.IR jsegment (3R).

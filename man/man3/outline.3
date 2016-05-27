@@ -1,0 +1,72 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH OUTLINE 3R
+.XE "outline()"
+.SH NAME
+outline \- draw the outline of a Rectangle
+.SH SYNOPSIS
+.ft B
+void outline (r)
+.sp
+Rectangle r;
+.SH DESCRIPTION
+The
+.I outline
+function
+draws the outline of the Rectangle
+.I r
+in the Bitmap
+.I physical
+using function Code
+.IR F_XOR .
+The right and lower
+edges are decremented by one pixel
+before the outline is drawn so that abutting
+Rectangles have no points in common.
+Note that since
+.I outline
+writes to the Bitmap
+.I physical
+the outline will be displayed on the screen without clipping
+to a layer or placing the outline in an obscured Bitmap.
+.SH EXAMPLE
+The following code could be used to track a Rectangle with
+the mouse.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+trackRect(tr)
+Rectangle tr;
+{
+	Rectangle r;
+	Point     p,q;
+	request (MOUSE);
+	while (!button1())
+		wait(MOUSE);
+	q = mouse.xy;
+	r = raddp (tr, q);
+	outline (r);
+	do {
+		wait (MOUSE);
+		p = mouse.xy;
+		if (!eqpt(p, q)){
+			outline (r);
+			r = raddp (tr, p);
+			outline (r);
+			q = p;
+		}
+	} while( button1() );
+}\fR
+.fi
+.RE

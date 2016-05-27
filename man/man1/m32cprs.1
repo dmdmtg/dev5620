@@ -1,0 +1,58 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.if '\*p'' \{\
+.ds N M32
+.ds p 
+.ds P 
+.ds l libc.a\}
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH M32CPRS 1
+.SH NAME
+m32cprs \- compress an IS25 object file
+.SH SYNOPSIS
+.B m32cprs
+.RB [ \-pv ]
+infile outfile
+.SH DESCRIPTION
+The 
+.I m32cprs
+command
+reduces the size of an \s-1IS\s+125 object file,
+.IR infile ,
+by removing duplicate structure and union descriptors.
+The reduced file,
+.IR outfile ,
+is produced as output.
+.PP
+The options are:
+.PP
+.TP 6
+.B \-p
+Print statistical messages including:
+.sp
+.RS 12
+total number of tags
+.br
+total duplicate tags
+.br
+total reduction of 
+.IR infile .
+.RE
+.PP
+.TP 6
+.B \-v
+Print verbose error messages if error condition occurs.
+.SH EXAMPLE
+.ft CM
+	m32cprs dmda.out sm3b
+.ft R
+.SH SEE ALSO
+m32strip(1).

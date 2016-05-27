@@ -1,0 +1,45 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH INSET 3R
+.XE "inset()"
+.SH NAME
+inset \- inset a Rectangle for a border
+.SH SYNOPSIS
+.B Rectangle inset (r, n) 
+.PP
+.B Rectangle r;
+.br
+.B int n;
+.SH DESCRIPTION
+The
+.I inset
+function
+returns the Rectangle:
+.PP
+{ \fIr.origin.x+n\fR, \fIr.origin.y+n\fR, \fIr.corner.x-n\fR, \fIr.corner.y-n\fR }
+.SH EXAMPLE
+The following code creates a clear
+Rectangle
+.I r
+with a 2-dot wide border inside
+.IR r :
+.PP
+.RS 3
+.ft CM
+.nf
+rectf(&display, r, F_STORE);
+rectf(&display, inset(r, 2), F_CLR);
+.fi
+.ft R
+.RE
+.SH SEE ALSO
+structures(3R).

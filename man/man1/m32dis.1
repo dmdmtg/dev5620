@@ -1,0 +1,168 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds N \fIWE\fR-32001 processor module	
+.ds p m32
+.ds P M32
+.ds l libc.a
+.SA 1
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH \*PDIS 1
+.SH NAME
+\*pdis \- \*N disassembler
+.SH SYNOPSIS
+.B \*pdis
+.RB [ \-o ]
+.RB [ \-V ]
+.RB [ \-L ]
+.RB [ \-d " sec]"
+.RB [ \-da " sec ]"
+.RB [ \-F " function]"
+.RB [ \-t " sec]"
+.RB [ \-l " string]"
+files
+.SH DESCRIPTION
+The 
+.I \*pdis
+command
+produces an assembly language listing
+of each of its
+object
+.IR file
+arguments.
+The listing includes
+assembly
+statements
+and the binary that
+produced those statements.
+.PP
+The following \fIoptions\fP are
+interpreted by the disassembler and may be specified in any order.
+.PP
+.TP 12
+.B \-o
+Will print numbers in octal.
+Default is hexadecimal.
+.PP
+.TP 12
+.B \-V
+Version number of the disassembler will be written to standard error.
+.PP
+.TP 12
+.B \-L
+Invokes a lookup of C source labels in the symbol table for
+subsequent printing.
+.PP
+.TP 12
+.BR \-d " sec"
+Disassembles the 
+named section as data,
+printing the offset of
+the data from the
+beginning of the section.
+.PP
+.TP 12
+.BR \-da " sec"
+Disassembles the 
+named section as data,
+printing the actual 
+address of the data.
+.PP
+.TP 12
+.BR \-F " function"
+Disassembles single
+named functions
+in each object file
+that is specified
+on the command line.
+.PP
+.TP 12
+.BR \-t " sec"
+Disassembles the
+named section as text.
+.PP
+.TP 12
+.BR \-1 " string"
+Will disassemble the
+library file specified
+as
+.IR string .
+For example,
+one would issue the
+command:
+.sp
+.ce
+.ft CM
+\*pdis \-l x \-l z
+.sp
+.ft R
+to disassemble
+.B libx.a
+and
+.B libz.a\c
+\&.
+On the 3B20 and VAX computers all libraries
+are assumed to be in
+.BR $DMD/m32/lib .
+On the 3B2 and 3B5 computers the libraries are assumed to be in
+.BR /lib .
+.DT
+.br
+.PP
+If the
+.BR \-d ,
+.B \-da
+or
+.BR \-t
+options are specified,
+only those named
+sections from each
+user supplied file name
+will be disassembled.
+Otherwise, all sections
+containing text will
+be disassembled.
+.PP
+If the
+.BR \-F
+option is specified,
+only those named 
+functions from each
+user supplied file name
+will be disassembled.
+.PP
+On output, a number enclosed in brackets
+at the beginning of a line,
+such as 
+.BR [5] ,
+represents that the C breakpointable line number,
+starts with the following instruction.
+An expression such as
+.B <40>
+in the operand field,
+following a relative displacement
+for control transfer instructions,
+is the computed address
+within the section to which
+control will be transferred.
+A C function name
+will appear in the first column,
+followed by
+.BR (\|) .
+.SH "SEE ALSO"
+\*pas(1),
+\*pcc(1),
+\*pld(1).
+.SH "DIAGNOSTICS"
+The self explanatory diagnostics
+indicate errors in
+the command line or problems
+encountered with the
+specified files.

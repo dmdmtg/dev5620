@@ -1,0 +1,96 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds N \fIWE\fR-32001
+.ds p dmd
+.ds P DMD
+.ds l libc.a
+.SA 1
+.ds ZZ CORE PACKAGE
+.TH \*PA.OUT 4 
+.SH NAME
+\*pa.out \- \*N object file format
+.SH DESCRIPTION
+The
+.I \*pa.out
+file
+is the output file from
+the assembler
+.I m32as (1)
+and
+the link editor
+.IR m32ld (1L).
+.if !'\*p'' \{\
+The resultant file can be executed on the target machine
+if no errors or unresolved references were found.
+In no case is the file given \s-1UNIX\s+1 system execute permissions
+because the object code is for the target machine
+not the host machine on which the file was created.
+\}
+.if '\*p'' \{\
+Both programs will make
+.B \*pa.out
+executable if there were no errors in assembling or linking,
+and no unresolved external references.
+\}
+.PP
+A \*N object file supports
+user-defined sections and contains extensive
+information for symbolic software testing.
+The overall structure of a \*N object file is given below.
+.if !'\*p'' \{\
+(An optional part of the common object file is not
+present in \*N.)\ 
+\}
+.sp
+.nf
+.RS 10
+File header.
+.if '\*p'' \s-1UNIX\s+1 system header.
+.if '\*p'm32' \s-1UNIX\s+1 system header.
+Section 1 header.
+\&...
+Section n header.
+Section 1 data.
+\&...
+Section n data.
+Section 1 relocation.
+\&...
+Section n relocation.
+Section 1 line numbers.
+\&...
+Section n line numbers.
+Symbol table.
+.sp
+.fi
+.RE
+.PP
+.RI See " filehdr" (5), " scnhdr" (5),
+.IR reloc (5), " linenum" "(5), and " syms (5)
+for descriptions of the individual parts.
+Every section created by
+.I \*pas
+.ds E4 a multiple of four
+.if '\*p'b16' .ds E4 an even
+.if '\*p'x86' .ds E4 an even
+contains \*(E4 number of bytes;
+directives to
+.I \*pld
+can create a section with an odd number of bytes.
+.PP
+A set of functions exist to manipulate \*N object files.
+.RI "See " ldfcn (3)
+and its associated references for more information.
+.SH "SEE ALSO"
+dmdcc(1), m32as(1), m32ld(1).
+.br
+ldfcn(3),
+filehdr(5), linenum(5), reloc(5), scnhdr(5), syms(5) in the
+\f2\s-1UNIX\s+1 System V Programmer Reference Manual\f1.

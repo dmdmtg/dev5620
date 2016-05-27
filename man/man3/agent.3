@@ -1,0 +1,60 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH AGENT 3R
+.SH NAME
+agent \- DMD agent subroutine
+.SH SYNOPSIS
+.B #include <jioctl.h>
+.PP
+.B  agent(ap)
+.br
+.B struct bagent \(**ap;
+.SH DESCRIPTION
+The
+.I agent
+utility
+performs user-defined functions on the DMD terminal.
+It is passed
+a pointer to the structure \fIbagent\fR defined in
+.BR <jioctl.h>
+as follows:
+.PP
+.ta .3i .8i 1.0i 1.35i
+.RS 0
+.nf
+\s-1
+.ft CM
+struct	bagent {
+	int	size;	/\(** size of src in & dest out \(**/
+	char	\(**src;	/\(** the source byte string \(**/
+	char	\(**dest;	/\(** the destination byte string \(**/
+};\s+1
+.fi
+.ft R
+.RE
+.PP
+\fBSrc\fR points to the input byte string.  \fIAgent\fR performs DMD functions
+on the information in the string and returns information to the host
+in the destination byte string.
+Upon return, \fBsize\fR MUST BE set to the length of the \fBdest\fR string.
+.PP
+A default agent routine has been supplied with
+.I layers
+and
+.I layersys
+which allows a host program to do all mouse button 3 functions.
+They are accessed from routines referenced in
+.IR hagent (3).
+.SH SEE ALSO
+hagent(3H), jagent(7H).
+
+

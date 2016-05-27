@@ -1,0 +1,83 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH BALLOC 3R
+.XE "balloc()"
+.XE "bfree()"
+.SH NAME
+balloc \- bitmap allocator
+.SH SYNOPSIS
+.B Bitmap *balloc(r)
+.br
+.B Rectangle r;
+.br
+.PP
+.B void bfree(b)
+.br
+.B Bitmap *b;
+.br
+.SH DESCRIPTION
+The
+.I balloc
+function
+either
+returns a pointer to a Bitmap large enough to contain the Rectangle
+.IR r ,
+or a 0 (\s-1NULL\s+1) for failure.
+The coordinate system inside the Bitmap is set by
+.IR r .
+The origin and corner of the Bitmap are those of
+.I r
+which must itself be in screen coordinates.
+.PP
+The
+.I bfree
+frees the storage associated with a Bitmap allocated by
+.IR balloc .
+.PP
+If a program does not free the memory allocated or if its layer
+is deleted,
+.I layersys
+automatically frees the memory.
+However, it is recommended that a program free its allocated
+memory when the storage is no longer needed so that other
+processes operating under
+.I layers
+will be able to use it.
+.SH EXAMPLE
+The following example shows the use of
+.I balloc
+and
+.I bfree
+in dynamically allocating memory for a Bitmap.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+Bitmap *b;
+
+main()
+{
+    b = balloc (Rect (0, 0, 48, 48));
+
+    .
+    .
+    .
+
+    bfree (b);
+}
+.fi
+.ft R
+.RE
+.SH SEE ALSO
+alloc(3R), gcalloc(3R).

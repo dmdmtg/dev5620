@@ -1,0 +1,59 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH RECTXRECT 3R
+.XE "rectXrect()"
+.SH NAME  
+rectXrect \- do the Rectangles overlap?
+.SH SYNOPSIS
+.ft B
+int rectXrect(r, s)
+.sp
+Rectangle r, s; 
+.SH DESCRIPTION
+The
+.I rectXrect
+function
+returns 1 if
+.I r
+and
+.I s
+share any point,
+0 otherwise.
+.SH EXAMPLE
+The following routine will prompt the user to sweep out two
+Rectangles.
+If they intersect, the bell will ring.
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+
+main()
+{
+	Rectangle r, s;
+
+	request (KBD);
+	do {
+		r = getrect ();
+		outline (r);
+		s = getrect ();
+		outline (s);
+		if (rectXrect (r, s))
+			ringbell ();
+		outline (r);
+		outline (s);
+	} while (kbdchar()==-1);
+}
+\fR
+.fi
+.RE

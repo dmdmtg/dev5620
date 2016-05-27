@@ -1,0 +1,88 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.SA 1
+.ds N \fIWE\fR-32001 processor module
+.ds p m32
+.ds P m32
+.ds l libc.a
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH M32CONV 1
+.SH NAME
+\*pconv \- \*N Software Generation System (SGS) object file converter
+.SH SYNOPSIS
+.B \*pconv
+[ - ] [ -p ] [ -s ] -t target files
+.SH DESCRIPTION
+The
+.I \*pconv
+command
+converts \*N object files from their current format to the format
+of the
+.I target
+machine.
+The converted file is written to
+file\c
+.I .v\c
+\&.
+.PP
+Command line options are:
+.PP
+.TP 12
+.BR \-
+indicates 
+.I files
+should be read from
+.I stdin\c
+\&.
+.PP
+.TP 12
+.BR \-p
+makes convert produce the output file in the portable archive format
+(if the input file is an archive in either the old or new format).
+Otherwise, all archives will be produced in the old format.
+.PP
+.TP 12
+.BR \-s
+causes \f2m32pconv\f1 to function exactly as 3bswab, i.e. to "preswab"
+all characters in the object file.  This is useful only for AT&T 3B20 computer
+object files which are to be "swab-dumped" from a DEC machine
+to a 3B20 computer.
+.PP
+.TP 12
+.BR \-t " target"
+indicates the machine (target) to which the object file is being shipped.  This
+may be another host or a target machine.  Legal values for
+.B target
+are: pdp, vax, ibm, i80, x86, b16, n3b and m32.
+.PP
+The
+\*Pconv utility can be used to convert all object files in common object file
+format, not only \*N object files. It can be used on either
+the source ("sending") or target ("receiving") machine.
+.PP
+The
+\*Pconv utility is meant to ease the problems created
+by a multi-host cross-compilation development environment. \*Pconv is best
+used within a procedure for shipping object files from one machine to
+another.
+.SH "DIAGNOSTICS"
+All intended to be self-explanatory. Fatal diagnostics on the command
+lines cause termination. Fatal diagnostics on an input file cause the
+program to continue to the next input file.
+.SH "BUGS"
+Special applications must compile \f2m32conv\f1 differently
+if it is to convert special object files, e.g., products of
+.I ldp\c
+\&,
+correctly.
+Archives created on another architecture and converted on the target
+machine may have members with incorrect permissions (this has no effect
+so long as they remain members of the archive).

@@ -1,0 +1,34 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH INDIRECT 3R
+.XE "MPXINDIRECT"
+.SH NAME
+\s-1MPXINDIRECT\s+1 \- accessing rom routine addresses
+.SH SYNOPSIS
+.B #define \s-1MPXINDIRECT\s+1
+.PP
+.B #include <dmd.h>
+.SH DESCRIPTION
+The rom routines are made accessible by a set of \fB#define\fRs in
+an include file
+.B mpx.h
+which is automatically included when one includes
+.BR dmd.h .
+The proper number of parameters being passed to the routine
+is automatically validated by the preprocessor through the use of these \fB#define\fRs.
+However, this will not permit one to access the address of a rom routine.
+In order to turn off the parameter validation so that a rom routine address
+may be accessed,
+it is necessary to define
+.I \s-1MPXINDIRECT\s+1
+before including
+.B dmd.h.

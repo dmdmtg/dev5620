@@ -1,0 +1,67 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH SEGMENT 3R
+.XE "segment()"
+.SH NAME
+segment \- draw a line segment in a Bitmap
+.SH SYNOPSIS
+.ft B
+void segment (b, p, q, f); 
+.sp
+Bitmap *b;
+.br
+Point p, q;
+.br
+Code f;
+\fR
+.SH DESCRIPTION
+The
+.I segment
+utility
+draws a line segment in Bitmap
+.I b
+from Point
+.I p
+to Point
+.I q
+with function Code
+.IR f .
+.PP
+Like all the other graphics operations,
+.I segment
+clips the line so that only the portion of the line intersecting the
+Bitmap is displayed.
+.SH SEE ALSO
+jline(3R),
+jsegment(3R).
+.SH EXAMPLE
+The following call simply draws a line connecting a layer's
+origin Point to it's corner Point.
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+
+      \^.
+      \^.
+      \^.
+
+segment (&display, Drect.origin,
+        Drect.corner, F_XOR);
+
+      \^.
+      \^.
+      \^.
+\fR
+.fi
+.RE

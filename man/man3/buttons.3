@@ -1,0 +1,154 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH BUTTONS 3R
+.XE "bttn()"
+.XE "bttn1()"
+.XE "bttn2()"
+.XE "bttn3()"
+.XE "bttn12()"
+.XE "bttn13()"
+.XE "bttn23()"
+.XE "bttn123()"
+.XE "button()"
+.XE "button1()"
+.XE "button2()"
+.XE "button3()"
+.XE "button12()"
+.XE "button13()"
+.XE "button23()"
+.XE "button123()"
+.XE "bttns()"
+.SH NAME
+bttn[123], button[123], bttns \- button state
+.SH SYNOPSIS
+.ft B
+int bttn1( ), bttn2( ), bttn3( )
+.br
+int bttn12( ), bttn13( ), bttn23( ), bttn123( )
+.sp
+int button1( ), button2( ), button3( )
+.br
+int button12( ), button13( ), button23( ), button123( )
+.sp
+int bttn(b)
+.sp
+int button(b)
+.sp
+void bttns(updown)
+.sp
+int b;
+.br
+int updown;\fR
+.SH DESCRIPTION
+The functions
+.IR bttn1 ,
+.IR bttn2 ,
+and
+.I bttn3
+return the state of the associated mouse button.
+They return a
+non-zero if the button is depressed, 0 if not.
+.PP
+The
+.I bttn12
+function
+and the other multi-button functions return
+a Boolean OR
+of their states,
+e.g.,
+true if either button 1
+or
+button 2 is depressed
+(as opposed to button 1
+and
+button 2).
+.PP
+The
+.I bttn
+function
+takes as an argument the button number
+1, 2, or 3
+and returns the state of the button.
+.PP
+The
+.IR button [ x ]
+routines operate in the same manner as each of the
+.IR bttn [ x ]
+routines except that the
+.IR button [ x ]
+routines clip to the process layer.
+This means that the process must be current,
+the mouse must be owned
+and
+inside the process layer,
+and the proper buttons must be pressed.
+.PP
+Note:
+It is strongly recommended to use the
+.I button
+routines instead of the
+.I bttn
+routines.
+.PP
+The
+.I button
+function
+takes as an argument the button number
+1, 2, or 3
+and returns the state of the button.
+It also clips to the layer.
+.PP
+The
+.I bttns
+function
+is used to determine when the mouse state changes.
+When \fIbttns\fR is called, it ``busy loops''; not returning and not releasing
+the CPU until the mouse state changes.
+If
+.I updown
+is 0,
+.I bttns
+``busy loops'' until all buttons are released.
+If
+.I updown
+is 1,
+.I bttns
+``busy loops'' until any button is depressed.
+If
+.I updown
+is not 0 or 1,
+.I bttns
+returns immediately.
+.SH EXAMPLE
+The following code segment could be written to ``doodle'' in
+a layer.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+main()
+{
+    request (MOUSE);
+    for (;;){
+        wait (MOUSE);
+        if (bttn3())
+           break;
+    	if (button1())
+           point (&display, mouse.xy,
+                 F_STORE);
+    }
+}
+.fi
+.ft R
+.RE

@@ -1,0 +1,60 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH GETRECT 3R
+.XE "getrect()"
+.SH NAME
+getrect \- get Rectangle swept out by user
+.SH SYNOPSIS
+\fB
+Rectangle getrect( );
+\fR
+.SH DESCRIPTION
+The
+.I getrect
+function
+prompts the user with a box sweep cursor and waits for a
+Rectangle to be swept out with ``button 3''.
+It returns the screen coordinates of the Rectangle swept out.
+The box may be partly or wholly outside the process's layer.
+.SH BUGS
+There is no
+.I getrect
+call in the
+.I stand-alone
+world.
+.SH EXAMPLE
+The following routine will permit the user to sweep out a Rectangle.
+As long as the Rectangle swept out does not have any points in common with
+.IR Drect ,
+the user will be prompted to sweep out another Rectangle.
+Once the swept out Rectangle has points within
+.IR Drect ,
+the Rectangle will be clipped to \fIDrect\fR and returned.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+Rectangle
+sweep_rect( )
+{
+       Rectangle r;
+
+       do
+               r = getrect( );
+       while (!rectclip(&r, Drect));
+       return r;
+}
+.fi
+.ft R
+.RE

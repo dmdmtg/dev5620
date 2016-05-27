@@ -1,0 +1,62 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.TH TEXTURE16 3L "DMD 2.0"
+.SH NAME  
+texture16 \- draw Texture16 in Rectangle in Bitmap
+.XE "texture16"
+.SH SYNOPSIS
+.ft B
+void texture16 (b, r, t, f)
+.sp
+Bitmap *b; 
+.br 
+Rectangle r;
+.br 
+Texture16 *t; 
+.br 
+Code f;
+.SH DESCRIPTION
+The
+.I texture16
+function
+draws
+the Texture16 specified by
+.I t
+with function Code
+.I f
+in the Rectangle
+.I r
+in the Bitmap
+.IR b .
+This function
+is less efficient than
+.I texture
+and should only be used when size is an issue.
+.SH EXAMPLE
+The following call will fill in the layer with the clock cursor.
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+
+     .
+     .
+
+	texture16 (&display, Drect,
+		&C_clock, F_XOR);\fR
+.fi
+.RE
+.SH SEE ALSO
+cursor(3R),
+jtexture(3R),
+structures(3R),
+texture(3R).

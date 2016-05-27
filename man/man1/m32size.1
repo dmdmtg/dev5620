@@ -1,0 +1,65 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.if 'm32'' \{\
+.ds N 3B20S
+.ds p 
+.ds P 
+.ds l libc.a\}
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH M32SIZE 1
+.SH NAME
+m32size \- print section sizes of \f2WE\f1-32001 object files
+.SH SYNOPSIS
+.BR m32size
+.RB [ -o ]
+.RB [ -d ]
+.RB [ -V ]
+files
+.SH DESCRIPTION
+The
+.I m32size
+command
+produces section size information for each section in the
+\f2WE\f1-32001 object files.
+For each section in the object file, the name of the
+section is printed followed by its size in bytes,
+its physical address, and its virtual address.
+.PP
+Numbers will be printed in
+hexadecimal unless either the
+.B \-o
+or the
+.B \-d
+option is used, in which case
+they will be printed in octal or in decimal, respectively.
+.PP
+The
+.B \-V
+flag will supply the version information on the
+.I m32size
+command.
+.SH "SEE ALSO"
+m32as(1),
+m32cc(1),
+m32ld(1).
+.SH "DIAGNOSTICS"
+"m32size:  name:  cannot open"
+.br
+	if
+.I name
+cannot be read.
+.PP
+
+"m32size:  name:  bad magic"
+.br
+	if
+.I name
+is not a \f2WE\f1-32001 object file.

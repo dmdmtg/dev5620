@@ -1,0 +1,106 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds N \fIWE\fR-32001 processor module
+.ds p m32
+.ds P M32
+.ds l libc.a
+.SA 1
+.if '\*p'' \{\
+.ds N 3B20S
+.ds p 
+.ds P 
+.ds l libc.a\}
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH \*PSTRIP 1
+.SH NAME
+\*pstrip \- strip symbol and line number information from \*N object file
+.SH SYNOPSIS
+.B \*pstrip
+.RB [ \-l ]
+.RB [ \-x ]
+.RB [ \-r ]
+.RB [ -V ]
+file-names
+.SH DESCRIPTION
+The 
+.I \*pstrip
+command
+strips the symbol table and line number information from
+\*N object files,
+including archives.
+Once this has been done, no symbolic debugging access
+will be available for that file; therefore, this command is
+normally run only on production modules that have
+been debugged and tested.
+.PP
+The amount of information stripped from the symbol table
+can be controlled by using the following options:
+.PP
+.TP 9
+.BR \-l
+Strip line number information only;
+do not strip any symbol table information.
+.PP
+.TP 9
+.B \-x
+Do not strip static or external symbol information.
+.PP
+.TP 9
+.B \-r
+Reset the relocation indices into the symbol table.
+.PP
+.TP 9
+.B \-V
+Version of \*pstrip command executing.
+.DT
+.br
+.PP
+If there are any relocation entries in the object file and any symbol
+table information is to be stripped,
+.I \*pstrip
+will complain and terminate without stripping
+.I file-name
+unless the
+.B \-r
+flag is used.
+.PP
+The purpose of this command is to reduce the file storage
+overhead taken by the object file.
+.SH "FILES"
+/usr/tmp/\*pstr??????
+.SH "SEE ALSO"
+\*pas(1),
+\*pcc(1),
+\*pld(1).
+.SH "DIAGNOSTICS"
+.TP 15
+``\*pstrip:  name:  cannot open''
+.br
+	if
+.I name
+cannot be read.
+.PP
+.TP 15
+``\*pstrip:  name:  bad magic'' 
+.br
+	if
+.I name
+is not a \*N object file.
+.bp
+.TP 15
+``\*pstrip:  name:  relocation entries present; cannot strip'' 
+.br
+	if
+.I name
+contains relocation entries, the
+.B \-r 
+flag not used
+and any symbol table information was to be stripped.

@@ -1,0 +1,48 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ CORE PACKAGE
+.TH JIM.RECOVER 1
+.SH NAME
+jim.recover \- interactively recover lost editing after abnormal failure
+.SH SYNOPSIS
+.B jim.recover
+[ \fB\-m\fP ] [ \fB\-f\fP ] [ files ... ]
+.SH DESCRIPTION
+The
+.I jim.recover
+utility
+is created in the current directory by \fIjim\fP(1) whenever an abnormal
+failure occurs (e.g., \fIjim\fP's layer gets deleted).  It's purpose is
+to allow the user to determine the disposition of edits made before the
+.I jim
+failure.
+One by one, the names of each files being edited at the time of failure
+will be printed along with an indication
+of whether the file was modified since last written.  Responding 'y' or 'Y'
+will cause the edits for that file to be saved; otherwise the changes will
+be lost.
+.PP
+The options are:
+.TP
+\fB\-m\fP
+looks only at files modified since the last write (i.e., only
+modified files).
+.TP
+\fB\-f\fP
+forces all files to appear modified.
+.PP
+If any files are specified, only the named files will be considered; the default is
+for all files to be considered.
+.SH FILES
+.ta \w'$DMD/bin/jimunpack      'u
+$DMD/bin/jimunpack	tool called by \f2jim.recover\f1
+.SH SEE ALSO
+jim(1), layers(1).

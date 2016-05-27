@@ -1,0 +1,154 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds N \fIWE\fR-32001 processor module
+.ds p m32
+.ds P M32
+.ds l libc.a
+.SA 1
+.if '\*p'' .nr C 1
+.if '\*p'm32' .nr C 1
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH \*PAS 1
+.SH NAME
+\*pas \- \*N assembler
+.SH SYNOPSIS
+.BR \*pas
+.RB "[" \-o " objfile]"
+.if '\*p'x86' .RB \-x
+.if '\*p'3b' .RB "[" \-Q "]"
+.RB "[" \-n "]"
+.RB "[" \-m "]"
+.RB "[" \-V "]"
+.if !\nC .RB "[" \-tv "]"
+file-name
+.SH DESCRIPTION
+The 
+.I \*pas
+command
+assembles the named file.
+.if '\*p'b16' \{\
+The output file is executable if no errors
+occurred during the assembly, transfer vectors were not used,
+and there are no unresolved external references.
+\}
+.PP
+The following flags are recognized by the assembler 
+and may be specified in any order:
+.TP 10
+.BI \-o " objfile"
+Output of assembly is put in
+.IR objfile .
+By default, the output file name is formed by
+removing the 
+.B .s
+suffix, if there is one, from the input file name
+and appending a 
+.B .o
+suffix.
+.if '\*p'x86' \{\
+.TP 10
+.B \-x
+This
+flag is
+.I required
+for all x86 files.
+\}
+.if '\*p'3b' \{
+.TP 10
+.B \-Q
+Warns the user if a transfer vector operand is used
+in any context other than a "call" instruction.
+\}
+.TP 10
+.B \-n
+Turns off long/short address optimization.
+By default, address optimization takes place.
+.TP 10
+.B \-m
+.ie '\*p'3b'  \{\
+Inhibit the invocation of the
+\}
+.el Invoke the
+.I m4
+macro processor.
+By default, 
+.if !'\*p'3b' do not
+invoke
+.I m4
+on the input to the assembler.
+.TP 10
+.B \-V
+Causes the version number of the assembler being run
+to be written on standard error.
+.if !\nC \{\
+.TP 10
+.B \-tv
+Causes the assembler to generate
+transfer vector linkages for function calls.
+By default, no transfer vectors are generated.
+\}
+.SH FILES
+.RI /usr/tmp/\*pas[1-6] XXXXXX
+temporary files
+.SH "SEE ALSO"
+dmdcc(1),
+\*pld (1),
+\*pnm(1),
+\*pstrip(1).
+.br
+m4(1) in the
+\f2\s-1UNIX\s+1 System V Programmer Reference Manual\f1.
+.SH DIAGNOSTICS
+If the input file cannot be read,
+the assembly will terminate with the message
+"Unable to open input file".
+If assembly errors are detected in the input file
+the following information is written to standard error:
+the input file name, line number where the error occurred
+in the assembly code,
+a (hopefully) descriptive message of the problem,
+and, if the input file was produced by the C compiler \c
+.RI "[see " \*pcc (1)]
+the line number in the C program that generated
+the erroneous code.
+.SH WARNINGS
+.PP
+If the input file does not contain a 
+.B .file
+assembler directive then
+the file name given by the assembler when an
+error occurs is one of the temporary files.
+.if !\nC \{
+.PP
+If the
+.I m4
+.RI "[see " m4 (1)]
+macro processor is used then
+.I m4
+keywords cannot be used as symbols (variables, functions, labels)
+in the input assembly file since
+.I m4
+cannot determine which are assembler symbols and 
+which are real 
+.I m4
+macros.
+\}
+.SH BUGS
+The
+.if '\*p'b16' .B .even
+.if '\*p'x86' .B .even
+.if '\*p'3b' .B .align
+.if '\*p'm32' .B .align
+.if '\*p'' .B .align
+assembler directive is not guaranteed to work
+in the
+.B .text
+section when optimization is performed.

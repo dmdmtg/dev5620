@@ -1,0 +1,24 @@
+This 5620 DMD host development package works on both Suns and System V.
+First install the pseudo-tty based layers into your chosen $DMD directory,
+and install this package on top of it into the same target directory. 
+If you plan to use xcip, xproof, or some other tools that need troff fonts,
+you will also want to install the lib/xfont files from the tc630 package
+into $DMD/font.
+
+To compile and install this package, use
+
+	make DMD=<your chosen install directory> install
+
+Much of the package can be moved to a different install directory without
+recompiling by simply setting the 'DMD' environment variable to point to
+the new directory, but not all of the Software Generation System is 
+guaranteed to work if you do that.
+
+This source code is copyrighted by AT&T but is distributable under the
+terms of the GNU General Public License.  See the 'COPYING' file for
+details.
+
+- Dave Dykstra, 3/25/94
+
+P.S. The 'dmdebug' directory was added on 6/11/96 but not included in the
+     top level makefile.  You're on your own to build it.

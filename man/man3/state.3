@@ -1,0 +1,68 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH STATE 3R
+.XE "P->state"
+.XE "MOVED"
+.XE "RESHAPED"
+.SH NAME
+P->state \- Process state variable
+.SH SYNOPSIS
+.B #include <dmd.h>
+.sp
+.B int P->state;
+.SH DESCRIPTION
+.I P->state
+is the state variable for a process running in the \s-1DMD\s+1.
+There are two fields in this variable which a program
+may need to deal with:
+\s-1MOVED\s+1,
+and
+\s-1RESHAPED\s+1.
+These bits are set by \f2layersys\f1 but if a program handles
+the display recovery of being moved or reshaped,
+it must reset the bits
+using the following code.
+.PP
+For a process to test whether its \f2layer\f1 has been
+\s-1MOVED\s+1 ,
+it must check:
+.PP
+.ft CM
+( P->state&\s-1MOVED\s+1 )
+.ft R
+.PP
+To reset the \s-1MOVED\s+1 condition it is necessary to execute:
+.PP
+.ft CM
+P->state &= ~(\s-1MOVED\s+1|RESHAPED);
+.ft R
+.PP
+For a process to test whether its \f2layer\f1 has been
+\s-1RESHAPED\s+1,
+it must check:
+.PP
+.ft CM
+( P->state&\s-1RESHAPED\s+1 && !(P->state&\s-1MOVED\s+1) )
+.ft R
+.PP
+To reset the \s-1RESHAPED\s+1 condition it is necessary to execute:
+.PP
+.ft CM
+P->state &= ~\s-1RESHAPED\s+1;
+.ft R
+.PP
+The reason for the interaction of the \s-1MOVED\s+1 and \s-1RESHAPED\s+1 bits
+is purely historical.
+.SH SEE ALSO
+layers(1), pfkey(3R).
+
+

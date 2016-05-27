@@ -1,0 +1,69 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH JTEXTURE 3R
+.XE "jtexture()"
+.SH NAME
+jtexture \- draw Texture in Rectangle on display
+.SH SYNOPSIS
+.B void jtexture(r, t, f)  
+.PP
+.B Rectangle r; 
+.br
+.B Texture *t;
+.br
+.B Code f;
+.SH DESCRIPTION
+The
+.I jtexture
+function
+fills the Rectangle
+.I r
+in the display Bitmap
+with Texture
+.I t
+using function Code
+.IR f .
+The
+.I r
+argument
+represents layer coordinates
+in which a unit of distance may not represent a screen pixel.
+.SH EXAMPLE
+The following routine allows one to doodle with a Texture.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+main()
+{
+    Rectangle r;
+    Point s;
+
+    s.x = 16;
+    s.y = 16;
+    request (\s-1MOUSE\s+1);
+    for (wait(\s-1MOUSE\s+1); !button3();
+        wait(\s-1MOUSE\s+1)){
+        r.origin = mouse.jxy;
+        r.corner = add (r.origin, s);
+        if ( button1() )
+           jtexture (r, &T_grey, F_STORE);
+           if ( button2() )
+              jtexture (r, &T_grey, F_CLR);
+    }
+}
+.fi
+.ft R
+.SH SEE ALSO
+texture(3R).

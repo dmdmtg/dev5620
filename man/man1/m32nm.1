@@ -1,0 +1,187 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.if 'm32'' \{\
+.ds N 3B20S
+.ds p 
+.ds P 
+.ds l libc.a\}
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH M32NM 1
+.SH NAME
+m32nm \-print name list of \f2WE\f1-32001 object file
+.SH SYNOPSIS
+.nr A 1
+.if 'm32'u3b' .nr A 0
+.B m32nm
+[
+.B \-o
+|
+.B \-x
+|
+.B \-d
+]
+.RB [ \-v ]
+.RB [ \-n ]
+.RB [ \-e ]
+.if \nA .RB [ \-a ]
+.RB [ \-f ]
+.RB [ \-u ]
+.RB [ \-V ]
+file-name
+.B . \|. \|.
+.SH DESCRIPTION
+The
+.I m32nm
+command displays the symbol table of each
+\f2WE\f1-32001 object file
+.IR file-name .
+.I File-name
+may be a relocatable or absolute \f2WE\f1-32001 object file
+or it may be an archive of such \f2WE\f1-32001 object files.
+For each symbol, the following information will be printed:
+.PP
+.TP 9
+.B Name
+The name of the symbol.
+.TP 9
+.B Value
+Its value expressed as an offset or an an address
+depending on its storage class.
+.TP 9
+.B Class
+Its storage class.
+.nr C 1
+.if 'm32'n3b' .nr C 0
+.if 'm32'm32' .nr C 0
+.if \nC \{\
+.TP 9
+.BR Tv
+If the symbol is accessed through a transfer vector then this field contains
+``tv''.
+\}
+.TP 9
+.B Type
+Its type and derived type.
+If the symbol is an instance of a structure or of a union then the structure
+or union tag will be given following the type (e.g., struct-tag).
+If the symbol is an array, then the array dimensions will be given 
+following the type (e.g.,
+.BR char[ n ][ m ] ).
+.TP 9
+.B Size
+Its size in bytes, if available.
+.TP 9
+.B Line
+The source line number at which it is defined, if available.
+.TP 9
+.B Section
+For storage classes static and external,
+the object file section containing the symbol.
+.DT
+.br
+.PP
+The output of
+.I m32nm
+may be controlled using the following flags:
+.PP
+.TP 9
+\-h
+A symbol's value and size will be printed in hexadecimal (default).
+.TP 9
+\-d
+A symbol's value and size will be printed in decimal instead of hexadecimal.
+.TP 9
+.B \-o
+A symbol's value and size will be printed in octal instead of hexadecimal.
+.PP
+.TP 9
+.B \-v
+External symbols will be sorted by value before they are printed.
+.PP
+.TP 9
+.B \-n
+External symbols will be sorted by name before they are printed.
+.PP
+.TP 9
+.B \-e
+Only static and external symbols are printed.
+.PP
+.ie \nA \{\
+.TP 9
+.B \-a
+Full output is produced. Redundant symbols (.text, .data, and .bss),
+normally suppressed, are printed.
+.PP
+.TP 9
+.B \-f
+``Fancy'' output is produced; that is, the symbol table information
+is post-processed to reflect the block structure of the source code.
+.PP
+'br\}
+.el \{\
+.TP 9
+.B \-f
+Full output is produced. Redundant symbols (.text, .data, and .bss),
+normally suppressed, are printed.
+.PP
+'br\}
+.TP 9
+.B \-u
+Only undefined symbols are printed.
+.PP
+.TP 9
+.B \-V
+Version of \f2m32nm\f1 command executing.
+.DT
+.br
+.PP
+Flags may be used in any order, either singly or in combination,
+and may appear anywhere in the command line.
+Therefore, both 
+.sp
+.ce
+.ft CM
+m32nm name \-e \-v
+.ft R
+.sp
+and
+.sp
+.ce
+.ft CM
+m32nm \-ve name
+.sp
+.ft R
+print the static and external symbols in
+.IR name ,
+with external symbols sorted by value.
+.SH "FILES"
+/usr/tmp/nm??????
+.SH "SEE ALSO"
+m32as(1),
+m32cc(1),
+m32ld(1).
+.SH "DIAGNOSTICS"
+.TP 9
+``m32nm:  name:  cannot open''
+if
+.I name
+cannot be read.
+.PP
+.TP 9
+``m32nm:  name:  bad magic''
+if
+.I name
+is not a \f2WE\f1-32001 object file.
+.PP
+.TP 9
+``m32nm:  name:  no symbols''
+if the symbols have been stripped from
+.IR name .

@@ -1,0 +1,66 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH RECTF 3R
+.XE "rectf()"
+.SH NAME  
+rectf \- perform function on Rectangle in Bitmap
+.SH SYNOPSIS
+.ft B
+void rectf (b, r, f) 
+.sp
+Bitmap *b;
+.br 
+Rectangle r; 
+.br
+Code f;
+.ft R
+.SH DESCRIPTION
+The
+.I rectf
+function
+performs the action specified by the function Code
+.I f
+on the Rectangle
+.I r
+within the Bitmap
+.I b.
+.SH SEE ALSO
+jrectf(3R).
+.SH EXAMPLE
+The following routine will ``doodle'' on the screen using a Rectangle.
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+
+rectdoodle()
+{
+    Rectangle r;
+    Point s;
+
+    s.x = 16;
+    s.y = 16;
+    request (\s-1MOUSE\s+1);
+    for (wait(\s-1MOUSE\s+1); !button3();
+      wait(\s-1MOUSE\s+1)){
+        r.origin = mouse.jxy;
+        r.corner = add (r.origin, s);
+        if( button1() )
+            rectf (&display, r, \s-1F_STORE\s+1);
+        if( button2() )
+            rectf (&display, r, \s-1F_CLR\s+1);
+    }
+}
+.ft R
+.fi
+.RE

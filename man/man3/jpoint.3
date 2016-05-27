@@ -1,0 +1,54 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH JPOINT 3R
+.XE "jpoint()"
+.SH NAME
+jpoint \- draw single pixel on display
+.SH SYNOPSIS
+.B void jpoint(p, f)
+.PP
+.B Point p;
+.br
+.B Code f;
+.SH DESCRIPTION
+The
+.I jpoint
+function
+sets the pixel at location
+.I p
+(in layer coordinates)
+in the display Bitmap according to the function Code
+.IR f .
+.SH EXAMPLE
+The following routine can be used to ``doodle'' on the screen.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+doodle()
+{
+      request (\s-1MOUSE\s+1);
+      for (wait (\s-1MOUSE\s+1); !button3( );
+          wait (\s-1MOUSE\s+1)){
+           if( button1( ) )
+               jpoint (mouse.jxy, \s-1F_STORE\s+1);
+           if( button2( ) )
+               jpoint (mouse.jxy, \s-1F_CLR\s+1);
+      }
+}
+.fi
+.ft R
+.RE
+.SH SEE ALSO
+jsegment(3R), jmove(3R), point(3R).

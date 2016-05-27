@@ -1,0 +1,7 @@
+TD|dmd|5620|ttydmd|tty5620|5620	terminal 88 columns:\
+	:co#88:li#70:am:bs:pt:cm=\E[%i%d;%dH:nd=\E[C:up=\E[A:\
+	:cl=\E[H\E[J:cd=\E[J:ce=\E[K:al=\E[L:dl=\E[M:do=^J:\
+	:im=:ei=:ic=\E[@:dc=\E[P:sr=\E[T:sf=\E[S:le=^H:kb=^H:\
+	:kl=\E[D:kr=\E[C:ku=\E[A:kd=\E[B:kh=\E[H:ho=\E[H:ll=\E[70;1H:\
+	:AL=\E[%dL:DL=\E[%dM:IC=\E[%d@:DC=\E[%dP:rc=\E8:rs=\Ec:sc=\E7:\
+	:so=\E[7m:se=\E[0m:us=\E[4m:ue=\E[0m:ms:me=\E[0m:mr=\E[7m:

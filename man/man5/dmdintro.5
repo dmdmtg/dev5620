@@ -1,0 +1,41 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ CORE PACKAGE
+.TH DMDINTRO 5
+.SH NAME
+intro \- introduction to DMD file formats and include files
+.SH DESCRIPTION
+This section describes the header files and file formats
+used by DMD.
+C
+.B struct
+declarations appear where useful.
+Several of the files apply to the DMD object file format.
+The others are useful for assembly language programming
+or for installation of the various pieces of DMD.
+Normally, these files reside in directories under
+.BR /usr/dmd .
+Specific installations may alter this directory as described in
+.IR paths (5).
+\}
+.PP
+Briefly, three main directories contain any DMD
+files for users.
+All descriptions of these files use the names
+.BR BINDIR ", " INCDIR ", and " LIBDIR
+for the command, include, and library directories, respectively.
+If the actual path names are not
+.ie 'DMD'3B' .BR /bin ", " /usr/include/sgs ", and " /lib ","
+.el .BR /usr/dmd/bin ", " /usr/dmd/include ", and " /usr/dmd/lib ", "
+consult the system administrator.
+.SH "SEE ALSO"
+paths(5) in the
+\s-1\f2UNIX\s+1 System V Programmer Reference Manual\f1.

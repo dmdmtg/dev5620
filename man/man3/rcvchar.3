@@ -1,0 +1,53 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH RCVCHAR 3R
+.XE "rcvchar()"
+.SH NAME
+rcvchar \- receive character from host
+.SH SYNOPSIS
+.ft B
+int rcvchar ( );
+.SH DESCRIPTION
+The
+.I rcvchar
+function
+returns the next character received from the host.
+If there are no characters available or
+.I \s-1RCV\s+1
+was not requested
+.I rcvchar
+returns -1.
+.SH EXAMPLE
+The following routine could be used to wait until a character
+has been received from the host and then return it.
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+
+char
+gethostchar()
+{
+	int c;
+
+	request(own()&RCV);
+	do
+		wait (RCV);
+	while ((c = rcvchar()) == -1);
+	return (char)c;
+}
+\fR
+.fi
+.RE
+.SH SEE ALSO
+resources(3R).

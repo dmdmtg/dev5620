@@ -1,0 +1,60 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH TRIG 3L
+.XE "cos()"
+.XE "sin()"
+.XE "atan2()"
+.SH NAME
+cos, sin, atan2 \- cosine, sine and arc tangent trigonometric functions
+.SH SYNOPSIS
+\f3
+int cos(d) 
+.sp
+int sin(d)
+.sp
+int atan2 (x, y)
+.sp
+int d;
+.br
+int x, y;
+.SH DESCRIPTION
+The
+.I cos
+and
+.I sin
+functions
+return scaled integer approximations to the trigonometric functions.
+The argument values are in degrees.
+The return values are scaled so that
+.BR cos(0)==1024 .
+.PP
+The
+.I atan2
+function
+returns the approximate arc-tangent of
+.I y/x.
+The return value is in integral degrees.
+The error in approximation may be as large as five degrees.
+.SH EXAMPLE
+To calculate, for example, the mathematical expression
+.sp
+.ce
+.ft CM
+x=x0*cos(d)
+.sp
+.ft R
+to calculate a projection, the multiplication must be scaled:
+.sp
+.ce
+.ft CM
+x=muldiv(x0, cos(d), 1024)
+.ft R

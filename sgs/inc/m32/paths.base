@@ -1,0 +1,95 @@
+/*
+ *	static char *ID_pathsh = "@(#) paths.h: 1.7 4/24/83";
+ *
+ *
+ *	Pathnames for m32
+ */
+
+/*
+ *	Directory containing libraries and executable files
+ *	(e.g. assembler pass 1)
+ */
+#ifndef DMD
+#define DMD "BASEPATH"
+#endif
+#define LIBDIR	"BASEPATH/lib"
+#define LLIBDIR1 "BASEPATH/sgs/usr/lib"
+#define NDELDIRS 2
+
+/*
+ *	Directory containing executable ("bin") files
+ */
+#define BINDIR	"BASEPATH/bin"
+
+/*
+ *	Directory containing include ("header") files for building tools
+ */
+#define INCDIR	"BASEPATH/include/sgs"
+
+/*
+ *	Directory for "temp"  files
+ */
+#define TMPDIR	"/tmp"
+
+/*
+ *	Default name of output object file
+ */
+#define A_OUT	"m32a.out"
+
+/*
+ *	The following pathnames will be used by the "cc" command
+ *
+ *	m32 cross compiler
+ */
+#define CPP	"BASEPATH/lib/cpp"
+/*
+ *	Directory containing include ("header") files for users' use
+ */
+#define INCLDIR	"-I/tmp"
+#define COMP	"BASEPATH/lib/comp"
+#define C0	"BASEPATH/lib/front"
+#define C1	"BASEPATH/lib/back"
+#define OPTIM	"BASEPATH/lib/optim"
+/*
+ *	m32 cross assembler
+ */
+#define AS	"BASEPATH/bin/m32as"
+#define AS1	"BASEPATH/lib/m32as1"	/* assembler pass 1 */
+#define AS2	"BASEPATH/lib/m32as2"	/* assembler pass 2 */
+#define M4	"m4"			/* macro preprocessor */
+#define CM4DEFS	"BASEPATH/lib/cm4defs"	/* C interface macros */
+#define CM4TVDEFS "BASEPATH/lib/cm4tvdefs"	/* C macros with 'tv' call */
+/*
+ *	m32 link editor
+ */
+#define LD	"BASEPATH/bin/m32ld"
+#define LD2	"BASEPATH/lib/m32ld2"	/* link editor pass 2 */
+#define CRT0	"BASEPATH/lib/crt0.o"	/* C run time startoff */
+#define MCRT0	"BASEPATH/lib/mcrt0.o"	/* Profile run time startoff */
+#define FCRT0	"BASEPATH/lib/fcrt0.o"	/* Float Pt. run time startoff */
+#define FMCRT0	"BASEPATH/lib/fmcrt0.o"	/* Profiled Float Pt. run time startoff */
+#define TVCRT0	"BASEPATH/lib/tvcrt0.o"	/* C run time startoff for tv */
+
+/*
+ *	Test versions of comp, optim, as, ld - for developers only
+ */
+#define	NCOMP	""
+#define NOPTIM	""
+#define NAS	""
+#define NAS1	""
+#define NAS2	""
+#define NLD	""
+#define NLD2	""
+
+/*
+ *	Backup versions of comp, optim, as, ld - for developers only
+ */
+#define OCOMP	"BASEPATH/lib/comp.back"
+#define OC0	"BASEPATH/lib/front.back"
+#define OC1	"BASEPATH/lib/back.back"
+#define OOPTIM	"BASEPATH/lib/optim.back"
+#define OAS	"BASEPATH/bin/m32as.back"
+#define OAS1	"BASEPATH/lib/m32as1.back"
+#define OAS2	"BASEPATH/lib/m32as2.back"
+#define OLD	"BASEPATH/bin/m32ld.back"
+#define OLD2	"BASEPATH/bin/m32ld2.back"

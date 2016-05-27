@@ -1,0 +1,70 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH PFKEY 3R
+.XE "pfkey()"
+.XE "NOPFEXPAND"
+.SH NAME
+pfkey \- get programmable function key values
+.SH SYNOPSIS
+.ft B
+int pfkey (keynum, str, maxlen)
+.sp
+int keynum, maxlen;
+.br
+char *str;
+.SH DESCRIPTION
+By default
+the programmable function keys are automatically expanded
+and placed on the keyboard queue in their expanded form.
+If a program performs its own interpretation
+of the keys,
+it is necessary to set a bit in the process state variable:
+.sp
+.ft CM
+.ce
+P->state &= NOPFEXPAND;
+.ft R
+.sp
+The programmable function keys will have values 0x82 through 0x89
+for keys f1 through f8, respectively.
+.PP
+The
+.I pfkey
+places up to
+.B (maxlen-1)
+characters from the given programmable function key
+.I keynum
+into the character array
+.BR str .
+.PP
+When
+.I pfkey
+encounters a null value or it has processed the 
+.BR (maxlen-1) th
+character,
+.I pfkey 
+terminates the string with a \s-1NULL\s+1 and returns the length of the string.
+.SH EXAMPLE
+The following code places the value of function key 1 into \f2pfval\f1.
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+
+#define MAXPFKEY 80
+char pfval[MAXPFKEY];
+
+pfkey (0x82, pfval, MAXPFKEY);
+\fR
+.fi
+.RE

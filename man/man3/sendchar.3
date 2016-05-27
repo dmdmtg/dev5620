@@ -1,0 +1,84 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH SENDCHAR 3R
+.XE "sendchar()"
+.XE "sendnchars()"
+.SH NAME
+sendchar, sendnchars \- send character(s) to host
+.SH SYNOPSIS
+\f3
+int sendchar (c)
+.br
+char c;
+.sp
+void sendnchars (n, p)
+.br
+int n;
+.br
+char *p;
+\fR
+.SH DESCRIPTION
+The
+.I sendchar
+function
+sends a single byte to the host
+which will normally be read on the standard input of the \s-1UNIX\s+1 system process.
+The characters are passed to the \s-1UNIX\s+1 system
+.I tty
+input routine
+and will be processed as though they were typed on the keyboard by a user.
+In
+.I layers
+.I sendchar
+always returns a 1.
+In
+.B standalone
+.I sendchar
+returns a 0 if the character was placed on the queue.
+But if the queues are full,
+the character is not placed on the queue and
+the number of characters on the queue is returned.
+.PP
+The
+.I sendnchars
+function
+sends
+.I n
+characters pointed to by
+.I p
+to the host.
+.I Sendnchars
+is obtained from a library for programs running
+.B standalone.
+.PP
+These routines block if the output queue is full.
+.SH EXAMPLE
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+
+char	c;
+
+	.
+	.
+	.
+
+	sendchar (c);
+\fR
+.fi
+.RE
+.SH SEE ALSO
+layers(1), resources(3R).
+.br
+tty(1) in the
+\f2\s-1UNIX\s+1 System V User Reference Manual\f1.

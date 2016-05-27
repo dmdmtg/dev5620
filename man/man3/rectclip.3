@@ -1,0 +1,39 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH RECTCLIP 3R
+.XE "rectclip()"
+.SH NAME
+rectclip \- clip Rectangle to another Rectangle
+.SH SYNOPSIS
+\f3
+int rectclip(rp, s)
+.sp
+Rectangle *rp, s;\f1
+.SH DESCRIPTION
+The
+.I rectclip
+function
+clips the Rectangle in place pointed to by
+.I rp
+so that it is completely contained within the Rectangle
+.IR s .
+The return value is 1 if any part of
+.I *rp
+is within \f2s\f1.
+Otherwise the return value is 0 and
+.I *rp
+is unchanged.
+.SH SEE ALSO
+getrect(3R).
+.SH EXAMPLE
+See the example for
+.IR getrect (3R).

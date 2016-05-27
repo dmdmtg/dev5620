@@ -1,0 +1,59 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH VERSION 3R
+.XE "version()"
+.SH NAME
+version \- return terminal version number
+.SH SYNOPSIS
+.ft B
+int version ()
+.SH DESCRIPTION
+The
+.I version 
+function
+returns a hex number which identifies the version of a particular
+terminal, including the firmware version. 
+.PP
+The version number here is the same as the one displayed on the screen
+during keyboard requested selftest and as a response to the \f3<ESC>[c\f1
+escape sequence. There are three fields (f1;f2;f3) defined as follows:
+.TS
+center;
+l l.
+f1	identifies the terminal as a 5620
+f2	identifies which firmware and
+	hardware options are installed
+f3	identifies firmware release
+.TE
+.PP
+The integer returned by version is a hex number rather than the above ASCII
+string for easier parsing by an application program. 
+The hex number has the same three fields in the format 0xf1f2f3, 
+where each field is one byte.
+.SH EXAMPLE
+For example:
+.sp
+.ce
+.ft CM
+version 0x080705
+.ft R
+.sp
+is equivalent to version
+.sp
+.ce
+.ft CM
+8;7;5
+.sp
+.ft R
+which corresponds to \s-1DMD\s+1 Release 2.0.
+.SH SEE ALSO
+termid(7H).

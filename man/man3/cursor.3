@@ -1,0 +1,167 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH CURSOR 3R
+.XE "cursallow()"
+.XE "cursinhibit()"
+.XE "cursswitch()"
+.XE "cursset()"
+.XE "C_crosshair"
+.XE "C_confirm"
+.XE "C_clock"
+.XE "C_skull"
+.XE "C_sweep"
+.XE "C_target"
+.XE "C_cup"
+.XE "C_deadmouse"
+.XE "C_move"
+.SH NAME
+cursinhibit, cursallow, cursswitch, cursset \- control cursor
+.SH SYNOPSIS
+.B void cursallow( )
+.PP
+.B void cursinhibit( )
+.PP
+.B Texture16 *cursswitch(t)
+.PP
+.B void cursset(p)
+.PP
+.B Texture16 *t;
+.br
+.B Point p;
+.PP
+.B Texture16 C_target, C_crosshair, C_sweep, C_confirm;
+.PP
+.B Texture16 C_clock, C_cup, C_deadmouse, C_skull, C_move;
+.SH DESCRIPTION
+The
+.I cursinhibit
+function
+turns off the interrupt-time cursor tracking
+(the drawing of the cursor on the screen),
+but the mouse coordinates are still kept current
+and available in the global structure
+.I mouse.
+.PP
+The
+.I cursallow
+function
+enables interrupt-time cursor tracking.
+.PP
+The
+functions
+.I cursallow
+and
+.I cursinhibit
+stack.
+To enable cursor tracking after two calls to
+.IR cursinhibit ,
+two calls to
+.I cursallow
+are required.
+.PP
+The
+.I cursswitch
+function
+changes the mouse cursor to the Texture16 specified by
+.IR t .
+If
+.I t
+is 0, the cursor is restored to the default arrow. 
+The
+.I cursswitch
+function
+returns the previous value of the cursor;
+the argument of the previous call to 
+.IR cursswitch .
+.PP
+The
+.I cursset
+function
+moves the mouse cursor from the current screen position to the new screen position 
+at Point
+.IR p .
+The
+.I cursset
+function
+also gives the ownership of the mouse to the calling process if it is running under
+.I layers.
+.PP
+Each Texture16 listed above is a cursor that is in ``rom''
+and is accessible by using the names above.
+.SH EXAMPLE
+The following example divides a layer into four Rectangles.
+Based on which Rectangle the mouse is in,
+this program either switches the cursor to the default arrow,
+switches the cursor to the \s-1AT&T\s+1 Logo,
+inhibits the cursor,
+or sets the cursor to \fIDrect.origin\fR.
+.PP
+.RS 3
+.ft CM
+.nf
+\s-1
+#include <dmd.h>
+Texture16 att = {
+         0x07E0, 0x1F08, 0x0000, 0x7FFE,
+         0x3FC2, 0x0000, 0xFFFF, 0x7FC1,
+         0x0000, 0xFFFF, 0x1F01, 0x0000,
+         0x7FFE, 0x0000, 0x1008, 0x07E0,
+};
+
+main()
+{
+    Point o, p;
+    Rectangle tl, tr, bl, br;
+    int lastr = 0;
+
+    o = div (sub (Drect.corner,
+             Drect.origin), 2);
+    tl.origin = tr.origin = bl.origin
+              = br.origin = Drect.origin;
+    tr.origin.x += o.x;
+    bl.origin.y += o.y;
+    br.origin = add (br.origin, o);
+    tl.corner = add (tl.origin, o);
+    tr.corner = add (tr.origin, o);
+    bl.corner = add (bl.origin, o);
+    br.corner = add (br.origin, o);
+    request (MOUSE|KBD);
+    while( kbdchar() == -1 ){
+         wait (MOUSE);
+         p = mouse.xy;
+         if( ptinrect (p, tl) && lastr!=1 ){
+           if( lastr==3) cursallow ();
+           lastr = 1;
+           cursswitch(0);
+         } else if( ptinrect (p, tr) &&
+                    lastr!=2 ){
+                  if( lastr==3) cursallow ();
+                  lastr = 2;
+                  cursswitch (&att);
+         } else if( ptinrect (p, bl) &&
+                    lastr!=3 ){
+                  lastr = 3;
+                  cursinhibit ();
+         } else if( ptinrect (p, br) &&
+                    lastr!=4 ){
+                  if( lastr==3) cursallow ();
+                  lastr = 4;
+                  cursset (Drect.origin);
+        }
+    }
+}
+\s+1
+.fi
+.ft R
+.RE
+.SH SEE ALSO
+structures(3R).

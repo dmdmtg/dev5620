@@ -1,0 +1,151 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ CORE PACKAGE
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH ICON 1
+.SH NAME
+icon \- interactive icon and picture drawer
+.SH SYNOPSIS
+.B icon
+[ \fB\-x\fR m ] [ \fB\-y\fR n ]
+.SH DESCRIPTION
+The
+.I icon
+utility
+is a menu driven interactive icon and picture drawing program.
+It runs under 
+.I layers
+using the "mouse" and keyboard for command and text entry.
+The default \fIicon\fR display consists of a 50X50 cell grid in the lower right
+hand corner of the layer in which
+.I icon
+was invoked.  By invoking \fIicon\fR with the \fB\-x\fR and \fB\-y\fR flags,
+the grid size may be specified to be \fIm\fRX\fIn\fR, overriding the default.
+Each cell in this grid corresponds to a single bit in the 
+.I icon
+being created or edited.
+In the upper left hand corner of the layer,
+an actual size view of the icon is displayed.
+.TP 15
+\f3Button 1\f1
+Button 1 when depressed and held in draws a black square in the 
+grid position pointed to by the mouse cursor.
+.TP
+\f3Button 2\f1
+Button 2 when depressed and held in undraws any black square in the
+grid position pointed to by the mouse cursor.
+.TP
+\f3Button 3\f1
+Button 3 when depressed displays a menu of icons.
+By moving the cursor (now a box) over the desired icon and releasing the
+button, a command will be invoked.
+If the button 3 command requires a section of the grid display to be
+selected, hitting button 2 will format a 16x16 grid outline.
+To specify other than this 16x16 grid outline,
+hit button 3 and sweep out the rectangle you wish
+the command to act on.
+.SH COMMANDS
+The command icons are described below from the upper left by rows
+to the bottom right.
+On the bottom row is a help command designated by the word "help".
+.TP 25
+\fBArrow\fR
+move to another portion of the grid.
+.TP
+\fBCopier\fR
+copy to another portion of the grid.
+.TP
+\fBBlack and white squares\fR
+change lights to darks and darks
+to lights (invert video).
+.TP
+\fBGarbage can\fR
+erase.
+.TP
+\fBHorizontal wrap arrow\fR
+flip on the x-axis.
+.TP
+\fBVertical wrap arrow\fR
+flip on the y-axis.
+.TP
+\fBTo right and down arrow\fR
+rotate 90 degrees clockwise.
+.TP
+\fBUp and to left arrow\fR
+rotate 90 degrees counterclockwise.
+.TP
+\fBHorizontal lines\fR
+shear along the x-axis.
+.TP
+\fBVertical lines\fR
+shear along the y-axis.
+.TP
+\fBFour line sets\fR
+stretch (expand).
+.TP
+\fBPinwheels\fR
+take one pattern and make many copies of it.
+.TP
+\fBEyeglasses\fR
+read an icon file.
+.TP
+\fBGrid\fR
+draw a reference grid.
+.TP
+\fBMouse\fR
+change current mouse cursor to icon.
+.TP
+\fBQuill pen\fR
+write an icon file.
+.TP
+\fBGrid, arrow to grid\fR
+bitblt operator.  
+.TP
+\fBHELP\fR
+prints the help menu.
+.TP
+\fBSmoking gun\fR
+exit the \fIicon\fR program.
+.SH CURSOR ICONS
+The following are status indicator icons that the mouse cursor changes to
+under various conditions:
+.TP 25
+\fBAlarm clock\fR
+wait.
+.TP
+\fBDead Mouse\fR
+mouse inactive.
+.TP
+\fBDark square in stack\fR
+menu on button 3.
+.TP
+\fBSquare with arrow\fR
+sweep rectangle (button 3).
+.TP
+\fBDouble square with arrow\fR
+sweep rectangle (button 3)
+or get 16x16 grid frame (button 2).
+.SH FILES
+.ta \w'$DMD/icon/texture/*     'u
+$DMD/lib/icon.m	terminal support program
+.br
+$DMD/icon/*	icons
+.br
+$DMD/icon/texture/*	textures
+.br
+$DMD/icon/texture16/*	texture16s
+.SH SEE ALSO
+layers(1).
+.SH BUGS
+Due to amountof available memory in the DMD, how many programs are currently
+ executing in the DMD, and the size of the \f2icon\f1 grid, 
+the terminal may lock after \f2icon is downloaded.
+

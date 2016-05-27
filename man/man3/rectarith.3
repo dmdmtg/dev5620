@@ -1,0 +1,66 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH RECTARITH 3R
+.XE "raddp()"
+.XE "rsubp()"
+.SH NAME
+raddp, rsubp \- arithmetic on Rectangles
+.SH SYNOPSIS
+\f3
+Rectangle raddp (r, p)
+.sp
+Rectangle rsubp (r, p)
+.sp
+Rectangle r;
+.br
+Point p;
+\fR
+.SH DESCRIPTION
+The
+.I raddp
+function
+returns the Rectangle 
+defined by
+(\fBadd(r.origin, p)\fR, \fBadd(r.corner, p)\fR).
+.PP
+The
+.I rsubp
+function
+returns the Rectangle 
+defined by
+.RB ( "sub(r.origin, p)" ,
+.BR "sub(r.corner, p)" ).
+.SH SEE ALSO
+structures(3R).
+.SH EXAMPLE
+The following code will create a box with the mouse coordinates
+at the center of the box.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+Rectangle r;
+\    \^.
+    \^.
+    \^.
+
+r = raddp (Rect(-15, -15, 15, 15),
+          mouse.xy);
+
+    \^.
+    \^.
+    \^.
+.ft R
+.fi
+.RE

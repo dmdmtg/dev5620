@@ -1,0 +1,100 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH STRING 3R
+.XE "string()"
+.XE "defont"
+.SH NAME  
+string, defont \- draw string in bitmap
+.SH SYNOPSIS
+\f3
+#include <font.h>
+.sp
+Point string (ft, s, b, p, f)
+.sp
+Font *ft; 
+.br 
+char *s;
+.br 
+Bitmap *b;
+.br 
+Point p;
+.br 
+Code f;
+.sp
+Font defont; \f1
+.SH DESCRIPTION
+The
+.I string
+function
+draws the null-terminated string
+.I s
+using characters from Font
+.I ft
+in Bitmap
+.I b
+at Point
+.I p
+with function Code
+.IR f .
+The return value is the location of the first character after
+.IR s ,
+passed to another call to string.
+The two strings will be concatenated.
+.PP
+The characters are drawn such that the origin
+point of the bounding rectangle of a maximum height character lies at
+.IR p .
+Therefore, a character drawn on the screen at (0, 0)
+will occupy the upper-leftmost character position on the screen.
+.PP
+The
+.I string
+function
+draws characters as they are in the font.
+No special action is taken for control characters such as tabs or newlines.
+.PP
+The global
+.I defont
+is predefined, and is the name of the standard font (not a pointer to it).
+.SH SEE ALSO
+jstring(3R), structures(3R).
+.SH EXAMPLE
+Following is an example for the use of \f2string\f1.
+.bp
+Here is a code fragment that prints "hello world"
+in a large font.
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+#include <font.h>
+
+       \^.
+       \^.
+       \^.
+
+
+Font *f;
+Point p;
+
+p = add (Drect.origin, Pt(4,4));
+if( (f = getfont
+	("/usr/dmd/font/HI.24")) == 0)
+        exit();
+string (f, "hello world",
+	&display, p, F_XOR);
+
+ffree (f);
+\fR
+.fi
+.RE

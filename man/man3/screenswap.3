@@ -1,0 +1,81 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH SCREENSWAP 3R
+.XE "screenswap()"
+.SH NAME  
+screenswap \- swap screen Rectangle and Bitmap
+.SH SYNOPSIS
+.ft B
+void screenswap (b, r, s) 
+.sp
+Bitmap *b;
+.br 
+Rectangle r, s; 
+.SH DESCRIPTION
+The
+.I screenswap
+function
+does an in-place exchange of the screen Rectangle
+.I s
+and the Rectangle
+.I r
+within the Bitmap
+.I b.
+Its action is undefined if
+.I r
+and
+.I s
+are not congruent.
+The
+.I s
+argument
+is clipped to the screen
+not the layer's Rectangle.
+.SH EXAMPLE
+The following code fragment is an excerpt from the \f2menuhit\f1 routine.
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+
+Bitmap *b;
+Rectangle r;
+
+	b = balloc (r);
+	cursinhibit ();
+	if (b)
+		bitblt (&physical, r, b, r, F_STORE);
+	rectf (&physical, r, F_OR);
+	cursallow ();
+
+	.
+	.
+
+	if (b){
+		cursinhibit ();
+		screenswap (b, b->rect, b->rect);
+		cursallow ();
+		bfree (b);
+	}
+\fR
+.fi
+.RE
+.bp
+The calls to
+.I cursinhibit
+and
+.I cursallow
+is to avoid any unwanted interaction with the cursor when copying
+to and from the screen bitmap.
+.SH SEE ALSO
+menuhit(3R).

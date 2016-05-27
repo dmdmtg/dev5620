@@ -1,0 +1,61 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH ITOX 3R
+.XE "itox()"
+.SH NAME
+itox \- convert integer to hexadecimal string representation
+.SH SYNOPSIS
+.B char *itox (n, s)
+.PP
+.B unsigned long n;
+.B char  *s;
+.SH DESCRIPTION
+The
+.I itox
+function
+returns the hexadecimal string representation of the integer
+.IR n .
+The argument
+.I s
+must point to a buffer of at least 11 bytes to place the string.
+The return value is
+.IR s .
+.SH EXAMPLE
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+     \^.
+     \^.
+     \^.
+
+int i=12;
+char *r;
+char buf[11];
+
+     \^.
+     \^.
+     \^.
+
+        r = itox (i, buf);
+.fi
+.ft R
+.RE
+.PP
+Note:
+.I r
+points to
+.I buf
+which contains the hexadecimal value ``0xC''.
+.SH SEE ALSO
+atoi(3L).

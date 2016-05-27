@@ -1,0 +1,93 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH GCALLOC 3R
+.XE "gcalloc()"
+.XE "gcfree()"
+.SH NAME
+gcalloc, gcfree \- garbage compacting allocator
+.SH SYNOPSIS
+.B char *gcalloc (nbytes, where)
+.br
+.B unsigned long nbytes;
+.br
+.B long **where;
+.PP
+.B void gcfree(p)
+.br
+.B char *p;
+.SH DESCRIPTION
+The
+.I gcalloc
+function
+provides a simple garbage-compacting allocator.
+It returns either a pointer to a block of
+.I nbytes
+contiguous bytes of storage or a \s-1NULL\s+1 if unavailable.
+The storage is not initialized to zeros.
+The pointer
+.I where
+points to the user's data where the location of the
+block is to be saved.
+The pointer
+.I *where
+will be updated after each compaction.
+That is, if garbage collection occurs, your storage will be moved,
+and your pointer will be changed to point to the new location of your
+storage area.
+Therefore, a program using
+.I gcalloc
+should never store the location of 
+gcallocated
+memory anywhere other than the location handed to the allocator.
+Typically, this location is contained in a structure such as a \fIBitmap\fR.
+.PP
+The
+.I gcfree
+function
+frees the storage block at
+.IR p .
+.PP
+If a program does not free the memory allocated or if its layer
+is deleted,
+.I layersys
+automatically frees the memory.
+However, it is recommended that a program free its allocated
+memory when the storage is no longer needed so that other
+processes, under
+.I layers
+will be able to use it.
+.SH EXAMPLE
+These routines could be used for allocating and freeing space
+used to store Points in a polygon.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+Point *poly;
+
+Point *
+polyalloc(n)
+{
+     return (poly = gcalloc)
+             (sizeof(Point)*n, &poly ) );
+}
+
+polyfree( )
+{
+     gcfree (poly);
+}
+.fi
+.ft R
+.SH SEE ALSO
+alloc(3R), balloc(3R).

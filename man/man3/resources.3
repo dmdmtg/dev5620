@@ -1,0 +1,164 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH RESOURCES 3R
+.XE "request()"
+.XE "own()"
+.XE "wait()"
+.XE "alarm()"
+.SH NAME
+request, own, wait, alarm \- routines dealing with resources
+.SH SYNOPSIS
+.ft B
+int request(r)
+.sp
+int own( )
+.sp
+int wait(r)
+.sp
+void alarm(t)
+.sp
+int r;
+.br
+unsigned t;
+.SH DESCRIPTION
+Each of these routines deal with the following \s-1DMD\s+1 resources:
+.PP
+.PD 0
+.TP 10
+.B KBD
+keyboard
+.TP
+.B SEND
+characters sent from \s-1DMD\s+1 to \s-1UNIX\s+1 system process
+.TP
+.B MOUSE
+mouse
+.TP
+.B RCV  
+characters received by \s-1DMD\s+1 from \s-1UNIX\s+1 system process
+.TP
+.B CPU  
+\s-1DMD\s+1 cpu
+.TP
+.B ALARM
+pseudo resource
+.PD
+.PP
+A bit vector indicating which resources are being referenced
+is composed by using the boolean \f3or\f1 procedure on the above constants(\&\s-1MOUSE\s+1\^|\^\s-1KBD\s+1 means
+you are referring to the mouse and keyboard resources).
+If the keyboard is not requested,
+characters typed will be sent to the standard input of the \s-1UNIX\s+1 system process.
+If the mouse is not requested,
+mouse events in the process layer will be interpreted by
+.I layersys
+rather than passed to the process.
+\s-1SEND\s+1 and \s-1CPU\s+1 are always implicitly
+.IR request ed.
+.PP
+The
+.I request
+announces a program's intent to use I/O devices and resources
+and is usually called once early in the program.
+The
+.B r
+argument
+is a bit vector indicating which resources are to be used.
+The routine returns a bit vector indicating the resources that
+you own.
+.PP
+Note that if a program calls
+.I request
+several times,
+each \f2request\f1 overrides the previously
+.IR request ed
+resources.
+This means that a resource previously
+.IR request ed
+but not
+in the latest call to
+.I request
+will no longer be owned.
+.PP
+The
+.I own
+function
+returns a bit vector
+of which I/O resources have data available.
+.PP
+The
+.I wait
+function
+suspends the process, enabling others,
+until at least one of the
+.IR request ed
+resources is available.
+The return value is a bit vector indicating which of the requested resources
+are available.
+Processes wishing to give up the processor to enable other processes to run
+may call
+\f2wait\f3(\s-1CPU\s+1)\f1.
+It will return as soon as all other active processes have had a chance to run.
+The
+.IB wait (\s-1SEND\s+1)
+call
+is a no-op but is not guaranteed to wait.
+.PP
+The
+.I alarm
+function
+starts a timer which will ``fire''
+.B t
+ticks (60ths of a second) in the future.
+A pseudo-resource
+.B \s-1ALARM\s+1
+can be used to check the status of the timer.
+Calling
+.I alarm
+implicitly \fIrequest\fRs the
+.B \s-1ALARM\s+1
+pseudo-resource.
+The
+\fIown\fR( ) \fB\s-1&ALARM\s+1\f1
+call
+indicates whether the alarm timer has fired.
+.PP
+The
+.I alarm
+call
+does not interfere with
+.I sleep
+and vice versa.
+.SH EXAMPLE
+The following routine shows how one can give up button 3 processing
+to \f2layersys\f1.
+.PP
+.RS 3
+.nf
+.ft CM
+#include <dmd.h>
+
+int	o;
+
+	request (\s-1MOUSE\s+1);
+
+	o = own();
+
+
+	if (bttn3()){
+		request (o&~\s-1MOUSE\s+1);
+		wait (\s-1CPU\s+1);
+		request (o);
+	}
+\fR
+.fi
+.RE

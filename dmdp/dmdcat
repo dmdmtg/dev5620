@@ -1,0 +1,40 @@
+#! /bin/sh
+#
+# dmdcat shell
+#
+
+trap "" 2
+echo -n "[?4i"
+trap 'echo -n "[?9i" ; exit 1' 2
+
+case "$1" in
+-b)
+	if [ ! -x /usr/bin/col ]
+	then
+		trap "" 2
+		echo 'dmdcat: -b option does not work on your computer'
+		echo -n "[?9i"
+		exit 1
+	fi
+	shift
+	case $# in
+	0)
+		col -b
+		;;
+	1)
+		col -b <$1
+		;;
+	*)
+		cat $@ | col -b
+		;;
+	esac
+	;;
+*)
+	cat $@
+	;;
+esac
+
+exitstatus=$?
+trap "" 2
+echo -n "[?9i"
+exit $exitstatus

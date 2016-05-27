@@ -1,0 +1,139 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH STRINGC 3L
+.XE "strcat()"
+.XE "strncat()"
+.XE "strcmp()"
+.XE "strncmp()"
+.XE "strcpy()"
+.XE "strncpy()"
+.XE "strchr()"
+.XE "strrchr()"
+.SH NAME
+strcat, strncat, strcmp, strncmp, strcpy, strncpy, strchr, strrchr \- string operations
+.SH SYNOPSIS
+.sp
+\f3
+char *strcat (s1, s2)
+.sp
+char *strncat (s1, s2, n)
+.sp
+int strcmp (s1, s2)
+.sp
+int strncmp (s1, s2, n)
+.sp
+char *strcpy (s1, s2)
+.sp
+char *strncpy (s1, s2, n)
+.sp
+char *strchr (s1, c)
+.sp
+char *strrchr (s2, c)
+.sp
+char *s1, *s2;
+.br
+int c;
+\fR
+.SH DESCRIPTION
+The arguments
+.I s1
+and
+.I s2
+point to strings (arrays of characters terminated by a
+null character).
+The functions
+.IR strcat ,
+.IR strncat ,
+.IR strcpy ,
+and
+.I strncpy
+all alter
+.IR s1 .
+These functions do not check for overflow of
+the array pointed to by
+.IR s1 .
+.PP
+The
+.I strcat
+function
+appends a copy of string
+.I s2
+to the end of string
+.IR s1 .
+It
+appends at most
+.I n
+characters.
+Each returns a pointer to the null-terminated result.
+.PP
+The
+.I strcmp
+function
+compares its arguments and returns an integer
+less than, equal to, or greater than 0
+(whether
+.I s1
+is lexicographically less than, equal to, or
+greater than
+.BR s2 ).
+The
+.I strncmp
+function
+makes the same comparison but looks at at most
+.I n
+characters.
+.bp
+The
+.I strcpy
+function
+copies string
+.I s2
+to
+.IR s1 ,
+stopping after the null character has been copied.
+It
+copies exactly
+.I n
+characters,
+truncating
+.I s2
+or adding
+null characters to 
+.I s1
+if necessary.
+The result will not be null-terminated if the length
+of
+.I s2
+is
+.I n
+or more.
+Each function returns
+.IR s1 .
+.PP
+The
+.I strchr
+function
+.RI ( strrchr )
+returns a pointer to the first (last)
+occurrence of character 
+.B c
+in string
+.B s
+or a
+.SM NULL
+pointer if
+.B c
+does not occur in the string.
+The null character terminating a string is considered to
+be part of the string.
+.SH SEE ALSO
+strlen(3R).

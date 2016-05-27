@@ -1,0 +1,241 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH STRUCTURES 3R
+.XE "Word"
+.XE "Code"
+.XE "Point"
+.XE "Rectangle"
+.XE "Bitmap"
+.XE "Texture"
+.XE "Texture16"
+.XE "Font"
+.XE "Fontchar"
+.SH NAME
+Word, Code, Point, Rectangle, Bitmap, Texture, Texture16, Font, Fontchar \- \s-1DMD\s+1 Structures
+.SH SYNOPSIS
+.ft B
+#include dmd.h
+.sp
+#include font.h
+.SH DESCRIPTION
+In the following summaries,
+all coordinates are screen or Bitmap coordinates
+(which are scaled the same)
+unless specified as layer coordinates.
+These structure definitions are included in a program
+by including
+.BR dmd.h .
+.I Font
+and
+.I Fontchar
+are defined in
+.BR font.h .
+.SH \fIWord\fR
+.RS 3
+\s-1
+.ft CM
+typedef  int  Word;\fR\s+1
+.RE
+.PP
+A
+.I Word
+is a 32-bit integer and is the unit of storage used in the graphics software.
+.SH \fICode\fR
+.RS 3
+\s-1
+.ft CM
+typedef int Code;\fR\s+1
+.RE
+.PP
+.I Code
+is the functional constant used in all graphical drawing or copying 
+operations.  Possible Codes are:
+.PP
+.RS 3
+\s-1
+.nf
+.ft CM
+F_STORE     target  =  source
+F_OR        target |=  source
+F_XOR       target ^=  source
+F_CLR       target &= ~source\fR\s+1
+.fi
+.RE
+.SH \fIPoint\fR
+.RS 3
+\s-1
+.nf
+.ft CM
+typedef struct Point {
+   short  x;
+   short  y;
+} Point;\fR\s+1
+.fi
+.RE
+.PP
+A
+.I Point
+is a location in a
+.IR Bitmap ,
+such as the display.
+The coordinate system has
+.I x
+increasing to the right and
+.I y
+increasing down.
+.SH \fIRectangle\fR
+.RS 3
+\s-1
+.nf
+.ft CM
+typedef struct Rectangle {
+   Point  origin;        /* Upper left */
+   Point  corner;        /* Lower right */
+} Rectangle;\fR\s+1
+.fi
+.RE
+.PP
+A
+.I Rectangle
+is a rectangular area in a
+.IR Bitmap .
+By definition
+.BR "origin.x<=corner.x" " and " "origin.y<=corner.y"
+define the rectangle.
+By convention, the right (maximum \f2x\f1) and bottom (maximum \f2y\f1) edges are
+excluded from the represented rectangle, so abutting rectangles have no
+points in common.  Thus
+.I corner
+is the coordinates of the first point beyond the rectangle.
+The data on the display is contained in the
+.B Rectangle
+\f3{0, 0, \s-1XMAX, YMAX\s+1}\f1
+where
+\f3\s-1XMAX\s+1=800\f1
+and
+\f3\s-1YMAX\s+1=1024\f1.
+.SH \fIBitmap\fR
+.RS 3
+\s-1
+.nf
+.ft CM
+typedef struct Bitmap {
+   Word      *base;      /* pointer to start of data */
+   unsigned  width;      /* width in Words of total data area */
+   Rectangle rect;       /* rectangle in data area */
+   char      *_null;     /* unused, always zero */
+} Bitmap;\fR\s+1
+.fi
+.RE
+.PP
+A
+.I Bitmap
+holds a rectangular image stored in contiguous memory starting at
+.I base.
+Each
+.I width
+words of memory form a scan-line of the image.
+The
+.I rect
+argument
+defines the coordinate system inside the
+.IR Bitmap .
+Argument
+.I rect.origin
+is the location in the
+.I Bitmap
+of the upper-leftmost point in the image
+and is not necessarily (0,0).
+Graphical operations performed on a \f2Bitmap\f1 are clipped to
+.I rect.
+.SH \fITexture\fR
+.RS 3
+\s-1
+.nf
+.ft CM
+typedef struct Texture {
+	Word   bits[32];
+} Texture;\fR\s+1
+.fi
+.RE
+.PP
+A
+.I Texture
+is a 32\(mu32 dot bit pattern.
+.IR Texture s
+are aligned to absolute display positions,
+so adjacent areas colored with the same
+.I Texture
+mesh smoothly.
+.SH \fITexture16\fR
+.RS 3
+\s-1
+.nf
+.ft CM
+typedef struct Texture16 {
+   short  bits[16];
+} Texture16;\fR\s+1
+.fi
+.RE
+.sp
+A 
+.I Texture16
+is a 16\(mu16 dot bit pattern, similar to a 
+.I Texture.
+The mouse cursor is a
+.I Texture16.
+.SH \fIFont\fR \fRand \fIFontchar\fR
+.RS 3
+\s-1
+.nf
+.ft CM
+typedef struct Fontchar
+{
+   short         x;       /* left edge of bits */
+   unsigned char top;     /* first non-zero scan-line */
+   unsigned char bottom;  /* last non-zero scan-line */
+   char          left;    /* offset of baseline */
+   unsigned char width;   /* width of baseline */
+} Fontchar;
+
+typedef struct Font
+{
+   short    n;            /* number of chars in font */
+   char     height;       /* height of bitmap */
+   char     ascent;       /* top of bitmap to baseline */
+   long     unused;
+   Bitmap   *bits;        /* where the characters are stored */
+   Fontchar info[1];      /* n+1 character descriptors */
+} Font;\fR\s+1
+.fi
+.RE
+.PP
+A
+.I Font
+is a character set.  The character information is stored in the
+.I Fontchar
+structures.  The actual images of the characters are stored in the
+horizontal
+.I Bitmap
+bits.
+A character at point
+.I p
+has its upper-leftmost dot including empty space above it in the
+.IR Bitmap ,
+at
+.IR p .
+Characters in the
+.I Bitmap
+abut exactly, so the width of a character
+.I c
+is
+.BR "Font.info[c+1].x-Font.info[c].x" .

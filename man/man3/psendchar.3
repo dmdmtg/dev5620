@@ -1,0 +1,35 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH PSENDCHAR 3R
+.XE "psendchar()"
+.SH NAME
+psendchar \- send character to printer port
+.SH SYNOPSIS
+.ft B
+int psendchar (c)
+.sp
+char c;
+.SH DESCRIPTION
+The
+.I psendchar
+function
+sends a single byte to the printer output queue.
+If the queue is full, 
+.I psendchar
+returns a 0.
+Otherwise, 
+.I psendchar
+initiates printing
+and returns the number of characters on the output queue.
+.PP
+If no printer is attached to the terminal,
+the characters are lost.

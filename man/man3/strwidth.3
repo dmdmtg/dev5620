@@ -1,0 +1,72 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH STRWIDTH 3R
+.XE "strwidth()"
+.XE "jstrwidth()"
+.SH NAME  
+strwidth, jstrwidth \- width of character string
+.SH SYNOPSIS
+.ft B
+#include <font.h>
+.sp
+int strwidth (f, s) 
+.sp
+int jstrwidth (s) 
+.sp
+Font *f; 
+.br 
+char *s;
+.SH DESCRIPTION
+The
+.I strwidth
+function
+returns the width in full screen coordinates (pixels)
+of the null-terminated string
+.IR s ,
+interpreted in the Font
+.IR *f .
+The height of a character string is simply
+.IR f->height .
+.PP
+The call,
+.IR jstrwidth(s) ,
+is equivalent to
+.IR "strwidth (&defont, s)" .
+.SH EXAMPLE
+The following code fragment places the width of a string
+in a large font into a variable called width.
+.PP
+.RS 3
+.nf
+.ft CM
+\s-1
+#include <dmd.h>
+#include <font.h>
+
+   .
+   .
+
+   Font	*f;
+   int	width;
+
+   if( (f = getfont ("/usr/dmd/font/HI.24")) == 0)
+   	exit();
+   width = strwidth (f, "hello world");
+
+   .
+   .
+
+   ffree (f);\fR\s+1
+.fi
+.RE
+.SH SEE ALSO
+getfont(3L), string(3R), stringc(3R), strlen(3R), structures(3R).

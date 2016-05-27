@@ -1,0 +1,99 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH GLOBALS 3R
+.XE "physical"
+.XE "display"
+.XE "Drect"
+.XE "Jrect"
+.XE "mouse"
+.XE "PtCurrent"
+.SH NAME
+physical, display, Drect, Jrect, PtCurrent, mouse \- globals describing display and mouse
+.SH SYNOPSIS
+.B Bitmap physical;
+.PP
+.B Bitmap display;
+.PP
+.B Rectangle Drect;
+.PP
+.B Rectangle Jrect;
+.PP
+.B Point PtCurrent;
+.PP
+.B #define XMAX  800
+.br
+.B #define YMAX 1024
+.PP
+.B struct Mouse {
+.RS 3
+.br
+.B        Point xy;
+.br
+.B        Point jxy;
+.br
+.B        int   buttons;
+.br
+.RE
+.B } mouse;
+.SH DESCRIPTION
+Each global is defined when
+.B dmd.h
+is included.
+One should not include these definitions in their source code.
+.PP
+The global
+.I physical
+is a Bitmap describing the entire screen display in screen coordinates.
+.PP
+The global
+.I display
+is the Bitmap describing an individual layer in screen coordinates.
+.PP
+The global
+.I Drect
+is a Rectangle
+defining, in screen coordinates,
+the display area available to the program.
+It is not
+.I display.rect,
+which includes the border around each layer in
+.I layers.
+.PP
+The global
+.I Jrect
+is the Rectangle
+{ 0, 0, \fIXMAX\fR, \fIYMAX\fR }
+.PP
+The global
+.I PtCurrent
+is the current Point in layer coordinates which the j-routines reference and update.
+.PP
+The values
+.I XMAX
+and
+.I YMAX
+define the maximum x and y coordinates of the \s-1DMD\s+1 screen.
+.PP
+The global
+.I mouse
+is a location containing the current mouse coordinates
+and button states.
+The Point
+.I xy
+is in screen coordinates;
+.I jxy
+is in layer coordinates.
+The
+.I buttons
+are most easily interpreted using the button macros.
+.SH SEE ALSO
+buttons(3R), structures(3R).

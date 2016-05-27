@@ -1,0 +1,101 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH JCIRCLE 3L
+.XE "jcircle()"
+.XE "jdisc()"
+.XE "jarc()"
+.SH NAME
+jcircle, jdisc, jarc \- draw scaled circle on display
+.SH SYNOPSIS
+.B void jcircle(p, r, f)
+.PP
+.B void jdisc(p, r, f)
+.PP
+.B void jarc(p, p1, p2, f)
+.PP
+.B Point p, p1, p2;
+.br
+.B int r;
+.br
+.B Code f;
+.SH DESCRIPTION
+The
+.I jcircle
+function
+draws in the Bitmap
+display
+the approximate circle of radius
+.I r
+centered at
+.I p
+with Code
+.IR f .
+.PP
+The
+.I jdisc
+function
+draws in the Bitmap display a disc of radius
+.I r
+centered at
+.I p
+with Code
+.IR f .
+.PP
+The
+.I jarc
+function
+draws the circular arc centered at
+.I p
+counterclockwise from
+.I p1
+to the point on the circle closest to
+.I p2
+with Code
+.IR f .
+.PP
+All coordinates and radii are in layer coordinates
+operating under
+.I layers.
+Because the layer is scaled,
+these routines are actually implemented by calls to the ellipse routines.
+.SH EXAMPLE
+The following routine draws a row of six circles,
+a row of six discs, and a row of six arcs, scaled
+to the shape of the layer.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+draw()
+{
+  Point p;
+  int i, r;
+
+  r = 50;
+  p.y = 200;
+  for (p.x=100; p.x < XMAX-50; p.x+=120)
+       jcircle (p, r, F_XOR);
+  p.y = 600;
+  for (p.x=100; p.x < XMAX-50; p.x+=120)
+       jdisc (p, r, F_XOR);
+  p.y = 900;
+  for (p.x=100; p.x < XMAX-50; p.x+=120)
+       jarc (p, Pt(p.x-r, p.y), Pt(p.x+r,
+             p.y), Pt(p.x+r, p.y), F_XOR);
+}
+.fi
+.ft R
+.RE
+.SH SEE ALSO
+circle(3L), ellipse(3L), jellipse(3L).

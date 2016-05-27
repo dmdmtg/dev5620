@@ -1,0 +1,60 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH KBDCHAR 3R
+.XE "kbdchar()"
+.SH NAME
+kbdchar \- read character from keyboard
+.SH SYNOPSIS
+\fB
+int kbdchar( )
+\fR
+.SH DESCRIPTION
+The
+.I kbdchar
+function
+returns the next keyboard character typed to the process.
+If no characters have been typed,
+.I kbdchar
+returns \-1.
+If
+.I \s-1KBD\s+1
+has not been
+requested,
+.I kbdchar
+will always return \-1,
+even if characters have been typed to the process.
+.SH EXAMPLE
+This code will prevent a program from exiting until a character
+has been typed on the keyboard.
+.PP
+.RS 3
+.ft CM
+.nf
+#include <dmd.h>
+
+main( )
+{
+     request (\s-1KBD\s+1);
+
+     .
+     .
+     .
+
+     do
+          wait( \s-1KBD\s+1 );
+     while( kbdchar ( ) == -1 )
+}
+.fi
+.RE
+.ft R
+.SH SEE ALSO
+resources(3R).

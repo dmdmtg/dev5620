@@ -1,0 +1,88 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH SLEEP 3R
+.XE "sleep()"
+.XE "nap()"
+.XE "sw()"
+.SH NAME
+sleep, nap, sw \- suspend program execution
+.SH SYNOPSIS
+\f3
+void sleep (nticks)
+.sp
+void nap (nticks)
+.sp
+void sw (run)
+.sp
+int nticks;
+.br
+int run;
+\fR
+.SH DESCRIPTION
+The
+.I nap
+function
+busy loops for
+.I nticks
+ticks of the 60 Hz internal clock.
+To avoid interfering with screen refresh,
+programs drawing rapidly changing scenes should call
+.I nap
+between updates
+to synchronize the display and memory.
+.PP
+The
+.I sleep
+function
+is identical to
+.I nap
+except that it gives up the processor for the interval.
+Unless using the mouse, a program should call
+.I sleep
+in preference to
+.I nap.
+.PP
+The
+.I sw
+function
+is called by a
+.I layers
+process when it is ready to allow
+another process to execute.
+.I Sw
+may be called
+directly and is also called by
+.I wait
+and
+.I sleep.
+A process
+that never calls
+.IR sw ,
+.IR wait ,
+or
+.I sleep
+can lock out all other \s-1DMD\s+1 processes.
+.PP
+If
+.I run
+is 1,
+the process asks to be re-scheduled and will run
+again after all other processes have had their turn.
+If
+.I run
+is 0,
+the process asks to not be run again, until either an
+.I alarm
+fires or a character is received from either the
+keyboard of the UNIX System host.
+.SH SEE ALSO
+layers(1), resources(3R).

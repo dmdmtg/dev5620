@@ -1,0 +1,56 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH CANON 3R
+.XE "canon()"
+.SH NAME 
+canon \- create canonical form of a Rectangle from two Points
+.SH SYNOPSIS
+.B Rectangle canon(p1, p2)
+.PP
+.B Point p1, p2;
+.SH DESCRIPTION
+The
+.I canon
+function
+creates a Rectangle from two Points such that:
+.PP
+.RS
+\fIr.origin.x\fR equals the minimum of \fIp1.x\fR and \fIp2.x\fR
+.br
+\fIr.origin.y\fR equals the minimum of \fIp1.y\fR and \fIp2.y\fR
+.br
+\fIr.corner.x\fR equals the maximum of \fIp1.x\fR and \fIp2.x\fR
+.br
+\fIr.corner.y\fR equals the maximum of \fIp1.y\fR and \fIp2.y\fR
+.RE
+.PP
+In other words, given the two Points,
+.I canon
+creates a Rectangle such that the origin of the Rectangle
+is the top left Point and the corner of the Rectangle
+is the bottom right Point.
+.SH EXAMPLE
+Each of the following cases will yield the Rectangle.
+.PP
+.RS 3
+.ft CM
+.nf
+{ 0, 0, 32, 32}
+
+canon( Pt(0, 32), Pt(32, 0) )
+
+canon( Pt(32, 32), Pt(0, 0) )
+
+canon( Pt(32, 0), Pt(0, 32) )
+.fi
+.ft R
+.RE

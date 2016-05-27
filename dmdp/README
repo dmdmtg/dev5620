@@ -1,0 +1,508 @@
+/*		@(#)README	1.2		*/
+
+	WRITING PRINTER DRIVERS FOR NON-SUPPORTED PRINTERS
+	--------------------------------------------------
+
+
+	An important design feature of dmdp is a clean interface between
+generic and printer specific code within the program. This gives users
+the ability to write printer drivers for unsupported printers, as well
+as new printers that enter the market in the future. Dmdp printer
+drivers are loosely analogous to UNIX device drivers. They are a
+collection of C language subroutines which perform the printer specific
+tasks of dmdp.
+
+	This directory contains the files necessary to write new printer
+drivers. It is necessary that the Application Development binary
+tape is installed to compile new printer drivers.
+
+	A printer driver is actually composed of three parts:
+
++) Seven C language subroutines
+
++) Some data pointing to these seven subroutines and well as describing
+   some other information.
+
++) A case statement in the dmdp shell (dmdp.sh in this directory).
+   Note that the command dmdp is actually a shell program and that the
+   actual executable which is download into the terminal is the file
+   dmdp.m.
+
+	Each printer driver supported by dmdp adds extra code that
+must be downloaded into the terminal with dmdp. When adding new
+drivers, users can remove unused drivers to keep the program
+small if they want. The maximum number of distinct printer drivers
+dmdp can support is nine.
+
+DATA DESCRIBING THE DEVICE DRIVER
+---------------------------------
+
+	The file printer.h is composed of three parts. The first part
+is declarations of the seven subroutines. The second part is the
+declaration of the Printers structure. This is the structure used to
+point to the seven driver subroutines, as well as describing some
+other information. It is defined as an array of structures in the file
+printer.c. I will discuss it in more detail when I talk about that
+file. The third part of the file is external declarations of some
+global variables that can be used by printer drivers. These will be
+described later, along with support subroutines accessible to drivers.
+
+	The only change necessary to printer.h when adding (or deleting)
+a driver is to add (delete) declarations for the driver subroutines
+at the top of the file.
+
+	The file printer.c contains the definition of the array of
+structures Printers[]. Dmdp identifies which driver to use as
+a subscript of this array. The first argument downloaded with
+dmdp by the dmdp shell is the printer number. Subscripting starts
+at 1 rather than 0 because printer number 0 is always transparent mode.
+So, the current printer driver is actually described by:
+
+	Printers[printer_number_from_dmdp_shell - 1]
+
+	The dmdp shell contains a case for each supported printer. You
+will notice how the first argument to dmdp is the printer number. 
+Following arguments are the printer specific button 2 setup menu items.
+These menu items are downloaded with dmdp as arguments and eventually
+get displayed as setup menu items. These setup menu items must be in
+the following order:
+
+	+) horizontal dots per inch (DPI)
+	+) vertical dots per inch
+	+) print quality options
+	+) narrow/wide paper options
+
+Print quality and paper size are not always necessary. Note that the
+5320 is the only supported printer with a wide carriage, so it is the
+only printer with a narrow/wide paper (paper size) option. Also, there
+is no reason a user written printer driver must support different
+print qualities and the print quality option could be eliminated to
+simplify writing the driver.
+
+	The printers array of structures in printer.c must be
+initialized for the new printer driver with the following information.
+The variables:
+
+	firstvdpi
+	firstqual
+	firstwidth
+
+in printer.h refer to the first menu item for vertical density, print
+quality and paper width (narrow/wide paper). It is legal to specify
+from 0 to any number of options here. Numbering starts with 0 for the
+first horizontal dot per inch setting. Since horizontal dots per inch
+always starts with 0 it does not have to be specified. If a particular
+option is not used by your driver (and there is no associated menu
+item) you will just have two entries with the same number. For example,
+
+	[firsthdpi is always 0 so it need not be specified]
+	firstvdpi	2
+	firstqual	3
+	firstwidth	3
+
+says that there are two horizontal DPI menu items, one vertical DPI
+menu item, and no quality or width options.
+
+	The variables:
+
+	hdpiinit
+	vdpiinit
+	qualinit
+	paperinit
+
+specify initialization of setup menu items. The corresponding items in
+the dmdp shell should have arrows pointing to them. If the first,
+for example, horizontal DPI is the default when dmdp is downloaded,
+hdpiinit should be 0. If the second horizontal DPI is the default, hdpiinit
+is 1, and so on. If a setup option is not used, just initialize it to
+0.
+
+	The next thing in the printers structures are the addresses of
+the seven driver routines.
+
+	The hdpl array in the Printer structure refers to dots per LINE
+for the supported horizontal dots per inch. It is a two dimensional
+array because there can be different dots per line at a given DPI with
+wide or narrow paper. The meaning of the subscripts of the array
+are:
+
+	vdpl[HDPI][paper width]
+
+The current definition allows up to 4 horizontal densities and 2 paper
+widths. Just initialize any unnecessary array elements to 0. If your
+printer has more than 4 horizontal densities, you will have to edit
+printer.h and increase the hdpl size.
+
+	The last entry in the Printer structure is vdpl or vertical
+dots per LINE. This is the number of dots which will fit onto one
+11 inch horizontal printed page at a given vertical density. Again, only
+up to two vertical densities are supported and printer.h will have to be
+edited if your printer supports more than two densities in the vertical
+direction.
+
+GLOBAL VARIABLES AND SUPPORT FUNCTIONS
+--------------------------------------
+
+	Before discussing the driver subroutines, I will discuss global
+variables accessible to these subroutines and support functions which
+can be called from the driver.
+
+Global Variables
+----------------
+
+	All global variables accessible to drivers are declared as
+externs in printer.h. The global variables are:
+
++) Printers[] - this is the Printers structure as previously discussed.
+It is legal to look at information from this structure as:
+
+	Printers[printer_number_you_defined].whatever
+
+You wouldn't usually want to do this, however, because most data you
+need access to is more easily available in other global variables.
+
++) Sop8bits - This variable is a little complex. When you are using the
+send only printer port (Port B) on the back of the terminal there
+are some limitations. The only thing that can be changed with this port
+is baud rate. Bits per character and parity cannot be changed due to
+hardware limitations. This port outputs 8 bits + even parity.
+Although this is a legal RS232 setting, it is a little unusual and some
+printers cannot talk in this mode. It is possible in software, however,
+to make it appear to the printer that this port is talking 7
+bits + odd parity. This is done as follows. If the lower eight bits of
+each character are set to odd parity, the duart will always put an even
+parity ON bit in the 9'th position. An ON bit is the same as a stop
+bit. Therefore, it appears to the printer as 7 bits + odd parity + two
+stop bits. Printers that cannot talk 8 bits + even parity will likely
+be able to talk 7 bits + odd parity. You don't really have to
+understand this. The point is that you have a choice of setting your
+printer to 7 bits + odd parity or 8 bits + even parity. If you must use
+7 bits + odd parity, set this variable to 1, and the shipchar() support
+routine will do the translation for you.
+
++) Prntheads - This is the number of print heads (wires) that your
+printer has. It is a variable that the driver must set because it is
+printer specific. It is the number of bits the printer can print in the
+vertical direction in one pass. For each slice to be printed, the
+driver will be passed a buffer "slice width bits" X "Prntheads bits"
+in size.
+
++) Sop - Dmdp will set this variable to 1 if you are talking through the send
+only printer port. At this time, this is the only type of port available, but
+you can look at this variable if you want to execute different code for
+a full flow control port if this became available in the future. The
+supported printer drivers do this - trying to account for future
+hardware enhancements - but it is definitely not required. If you are
+writing a printer driver for your own use I wouldn't bother with
+worrying about this. Just plan to modify the driver in the future if
+there ever is a flow control port (or if you hack together your own
+port using the parallel port on the back of the terminal [not easy -
+it would require extensive firmware modifications as well as a hardware
+board]).
+
++) Center - Will be set to 1 if the Center setup option was chosen by
+the user.
+
++) Hdpi - Will be set to the horizontal dots per inch currently set by
+the user from the button 2 setup menu. So, 0 is the first hdpi menu
+item, 1 is the second, etc..
+
++) Vdpi - Same as Hdpi for vertical dots per inch
+
++) Prntquality - Same as Hdpi for print quality
+
++) Paperwidth - Same as Hdpi for paper width (wide/narrow)
+
++) Prntwidth - Number of horizontal dots which will fit onto a printed
+page. It is set to what you set in printer.c. It is basically an
+easier way to say:
+
+	(Printers[your_printer].hdpl)[Hdpi][Paperwidth]
+
++) Prntlength - Same as Prntwidth for vertical length. Same as:
+
+	(Printers[your_printer].vdpl)[Vdpi]
+
+Support Functions
+-----------------
+
++) shipchar() - send a character out the printer port. This is the same
+as the psendchar() routine documented in the Software Developer Guide,
+except Sop8bits is watched for as described above. It is recommended to
+always use this rather than psendchar().
+
++) shipnchar() - send a null terminated string out the printer port.
+
++) bookkeep() - called by printer drivers when printing graphics.
+Performs a number of bookkeeping functions, including:
+
+	+) watching for dmdp menus
+	+) letting go of the cpu so other windows can run
+	+) checks if the print area has been changed
+
+It should be called once for every byte sent to the printer in the
+prntslice() routine (see below). Returns 1 if the print area has been
+modified or the user has requested to abort the printout. When
+bookkeep() returns 1, it does not mean that the printer driver must
+return immediately. Some printers require that you finish a line in
+graphics print once it is started. It is legal to finish printing with
+a line of nulls after bookkeep returns 1.
+
++) isbitset() - Is bit set function. Returns the value of the bit
+in a bitmap being printed (0 or 1) at the X and Y coordinates passed
+to it as arguments.
+
++) ito4c() - Integer to 4 characters - Returns a four character ascii
+representation of the integer passed as an argument.
+
++) Pt() - Pt function as documented in the 5620 reference manual.
+Returns a Point data structure with the coordinates of the points
+being the two integers passed as arguments. Used to pass coordinates
+to isbitset().
+
+C LANGUAGE SUB-ROUTINES
+-----------------------
+
+	We now start talking about the heart of the printer driver -
+the C language sub-routines (pointed to in printer.c) which perform the
+actual interaction with the printer. Before I discuss what must be done
+by these seven routines, I want to make some general points.
+
+	Your printer manual will discuss how to format graphical data
+to send to your printer. Printers vary greatly in this regard, but a
+real effort was made to give the printer drivers enough information so
+that they can format data for any printer.
+
+	Try to modify one of the supported drivers rather that
+writing a driver from scratch.
+
+	Of course, when you create a new source file for the new
+printer driver, the makefile will have to be modified.
+
+	A word on timing. Most printers cannot print as fast as dmdp
+can send characters to them. The usual way to handle this would be for
+the 5620 to watch for flow control (XON/XOFF) from the printer. We are
+limited to a send only port, so we must simulate this by sleeping
+between lines of data sent to the printer.
+
+	There are two ways to implement the sleeps. One is to just
+sleep a fixed amount at the end of a line of data. The problem with
+this is that if there are performance improvements made to the 5620 in
+the future, the time to send the data to the printer plus the time of
+the sleep could decrease, because the 5620 is now able to process
+faster and send characters out faster. The result is that the printers
+could fall behind and lose data. The above comments refer to both Host
+and Screen, but apply more to Screen because the proportion of time
+spent with processing in screen mode is much more than in Host mode
+(it is more work). There is a similar problem in Host mode, however.
+In host mode, the simple sleep method can get out of sync by changing
+the baud rate on UNIX.
+
+	For these reasons, timing has been implemented in dmdp by
+actually timing off the 5620 real time clock. Before dmdp begins
+printing a line it looks at the time. After a line of data is sent to
+the printer, dmdp will not send any more data until a certain amount
+of time (specified by the driver) has elapsed since it began printing
+the line.
+
+	It turns out there there is also a potential problem with this
+second scheme. If you enter setup (or raise a menu) while dmdp is in the
+middle of printing a line, the clock will keep ticking even though the
+printer isn't printing. When you leave setup, the rest of the line will
+be printed and dmdp will look at the clock and see that enough time has
+expired to begin printing another line. So, the printer does not get
+time to finish printing the line. The wait times used by the supported
+drivers have enough slop (around 15%) that most printers can recover
+from this one line with no wait. It turns out the the thinkjet printer
+must have a very small buffer because it will start dropping
+characters. This was solved by doing both of the above types of
+timing. The thinkjet driver insures that an interval equal to 2/3
+times the time necessary to print the entire line is waited at the end
+of a line of graphics. It turned out this did not affect the overall
+speed of printing with the thinkjet very much. If your printer has a
+small buffer, you might want to look at the code in hp.c.
+
+	When writing a printer driver, you must figure out timing
+information for you printer. This means that you must determine how
+long it will take your printer to print lines of text and screen in
+1/60's of a second. Inserting the following code fragments into your
+printer drivers while debugging will greatly help in this task. When
+this code is inserted, there will be an additional menu when a screen
+printout is started which will let you change delay by choosing menu
+items with the mouse. The printout will continue when you raise the
+menu and do not choose a menu item. With this, and trial and error,
+timing can be determined.
+
+	The menu is used to change the global variable DelayDebug.
+When debugging, the driver routines should return DelayDebug rather
+than an absolute number. After timing testing is complete, simply
+substitute in the absolute numbers.
+
+/*************************************************************
+* put the following include and global variables at the top
+* of the printer drivers file
+**************************************************************/
+
+#include <font.h>
+
+static int DelayDebug;
+static int Ddone;
+static char Dbuf[20];
+
+static char *dmenutext[] = {
+	"+1",
+	"+10",
+	"-1",
+	"-10",
+	NULL
+	};
+
+static Menu Debugmenu = { dmenutext };
+
+/*************************************
+* put the following in initsession()
+*************************************/
+
+DelayDebug = 0;
+
+/******************************************************
+* put the following in initgraphics() and/or inittext()
+******************************************************/
+
+for(Ddone=0 ; !Ddone ;) {
+	wait(MOUSE);
+	while(button3()) wait(CPU);
+	while(!button3()) wait(CPU);
+	switch( menuhit(&Debugmenu, 3) ) {
+	case 0:
+		++DelayDebug;
+		break;
+	case 1:
+		DelayDebug += 10;
+		break;
+	case 2:
+		--DelayDebug;
+		break;
+	case 3:
+		DelayDebug -= 10;
+		break;
+	default:
+		Ddone = 1;
+		break;
+	}
+	sprintf(Dbuf, "DelayDebug is %d", DelayDebug);
+	rectf(&display,
+	 Rect(Drect.origin.x,Drect.origin.y,Drect.corner.x,Drect.origin.y+20),
+	 F_CLR);
+	string(&defont, Dbuf, &display, add(Drect.origin, Pt(3,3)), F_XOR);
+}
+
+	If you have source code there is an alternative method to do
+the above. Compiling dmdp with a -DDEBUG flag (see the makefile) will
+give you a similar facility to adding the above code into the driver,
+except the menu items to change delay will be part of the Main Menu,
+rather than having an extra menu. These items in the Main Menu will
+change the global variable Delay. You can experiment with different
+timing by extern'ing this variable in you driver and returning Delay
+rather than an absolute number.
+
+	When figuring timing, remember that you are trying to figure
+the total time it takes to print a line start to finish. You might
+find that, especially in Screen, some printers can actually keep up to
+the 5620 at certain line lengths when Delay is 0. This does not mean
+that the start to finish time is 0. If you want to account for the
+possibility of performance improvements in the 5620 in the future, you
+should use the actual time it takes to print the line rather than 0 in
+your timing information. The -DDEBUG compile option (and menu item)
+will cause this number to be printed in the dmdp window for each line.
+
+	My last comment is to try to not be discouraged by the
+complexity of the drivers for the supported printers. If you are
+writing a printer driver for your own use you need not get anywhere
+near as fancy. For example, as mentioned above, you need not look at
+the Sop variable and there is nothing saying you have to support all
+setup options such as print quality.
+
+The seven routines
+------------------
+
++) initsession() - This routine is called once when dmdp is first
+downloaded. It is mostly used to set Sop8bits when necessary.
+
++) initgraphics() - This routine is called once at the start of graphics
+printing. It is passed two arguments xbits and ybits. These are,
+respectively, the number of bits (or dots) in the X and Y directions in
+the entire graphics picture to be printed.
+
+This routine can perform a number of functions:
+
+	+) It must set the Prntheads variable.
+
+	+) It will probably do some of the work to implement the Center
+	option if this is supported. Every printer is different as far
+	as Center option is concerned. Some have hardware margins that
+	can be set. For some printers, you have to send a series of
+	spaces before each slice in prntslice(). Either way, this
+	routine will usually at least calculate margin indentation and
+	do linefeeds to center the printout vertically.
+
+	+) Again this is very printer specific, but this routine will
+	often put the printer into graphics mode.
+
+	+) It can set print quality if you are supporting multiple print
+	qualities in graphics.
+
+This routine returns a delay which dmdp should wait before starting to
+print.
+
++) prntslice() - This routine is called once for each slice to be printed.
+A slice is the full picture width and has a height of Prntheads (which you
+set in initgraphics()) or possible less with the last slice of the picture.
+The arguments are xbits, which is the same as with initgraphics, and slicesize,
+which is the height of the current slice to be printed.
+
+The slice to be printed is not actually passed to this routine. Rather, this
+slice can be referred to with the isbitset() function which is really what
+you need. Mostly, this routine is usually nested for loops which
+stuff bits into bytes in the proper format for the printer and call
+shipchar() to output to the printer.
+
+This routine may have to handle horizontal center, depending upon the
+printer.
+
+This routine returns a delay which dmdp should wait at the end of
+the current line. For the supported printers, there is a table
+of delays for different combinations of print densities and print
+qualities. Delays are calculated for line less than 200 bits, 400
+bits, 600 bits, etc.. You do not necessarily have to get that fancy
+for a printer driver only for your own use.
+
++) endgraphics() - This routine is called once at the end of a graphics
+printout. It is used for things like taking the printer out of graphics
+mode.
+
++) inittext() - This routine is called once from Host when the printer
+is turned on with the Printer On menu item or an escape sequence.
+It can be used for things like setting print quality.
+
++) textdelay() - This routine is only called if the printer is talking
+through the send only port. It returns a delay which dmdp will wait
+before printing more text. Again, this delay is the total time for
+a whole line, not only the time to wait at the end of a line.
+Similar to graphics print, delays are calculated for different
+print qualities and line of less than 20 characters, 40 characters,
+etc..
+
++) endtext() - This routine is called once when the printer is turned
+off, either with the Printer Off menu item or the printer off escape
+sequence. It can do things like reseting print quality.
+
+LOCATION OF SUPPORTED PRINTER DRIVERS
+-------------------------------------
+
+	The following files in this directory contain the printer drivers
+for the following printers:
+
+	5310/5320	tty.c
+	8510b		citoh.c
+	ThinkJet	hp.c

@@ -1,0 +1,305 @@
+.\" 
+.\"									
+.\"	Copyright (c) 1987,1988,1989,1990,1991,1992   AT&T		
+.\"			All Rights Reserved				
+.\"									
+.\"	  THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF AT&T.		
+.\"	    The copyright notice above does not evidence any		
+.\"	   actual or intended publication of such source code.		
+.\"									
+.\" 
+.ds ZZ APPLICATION DEVELOPMENT PACKAGE
+.TH DMDCC 1
+.SH NAME
+dmdcc \- DMD C compiler
+.nr C 0
+.if 'dmd'b16' .nr C 1
+.if 'dmd'x86' .nr C 1
+.if 'dmd'3b' .nr C 1
+.nr D 0
+.if 'dmd'3b' .nr D 1
+.SH SYNOPSIS
+.B dmdcc
+.RB [ \-J ]
+.RB [ \-c ]
+.RB [ \-g ]\}
+.RB [ \-O ]
+.RB [ \-OA ]
+[\fB\-W\fRc\fB,\fRarg1[\fB,\fRarg2...]]
+.RB [ \-S ]
+.RB [ \-P ]
+.RB [ \-E ]
+.RB [ \-V ]
+.RB [ \-D symbol]...
+.RB [ \-U symbol]...
+.RB [ \-I dir]
+file ...
+.SH DESCRIPTION
+The
+.I dmdcc
+command
+is the DMD C compiler.
+Any software developed to run in the DMD must be compiled using this command.
+It works in a very similar manner to other cc
+commands (in particular the \fIm32cc\fR command), though it also calls
+the link editor with certain arguments to ensure correct operation of code
+on the \*P.
+.PP
+The
+\fIdmdcc\fR utility generates IS25 assembly instructions.
+It accepts three types of arguments:
+.RS 8
+.B .c
+.br
+.B .s
+.br
+.B .o
+.RE
+.PP
+Arguments whose names end with
+.B .c
+are taken to be
+C source programs and those with
+.B .s
+are taken as assembly programs;
+they are compiled/assembled, and
+each object program is left on the file
+whose name is that of the source with
+.B .o
+substituted
+.RB "for " .c " or " .s .
+The
+.B .o
+file is normally deleted, however, if a single
+C program is compiled and link-edited all at one go.
+.PP
+The following flags are interpreted by
+.I dmdcc\c
+\&.
+See
+.IR m32ld (1)
+or
+.IR m32as (1)
+for other useful flags.
+.PP
+.TP 6
+\fB\-J\fR
+Compile the named files, loading and linking them for stand-alone execution
+on a DMD.  If this flag is not given, the files will be loaded and linked
+for \fIlayers\fR execution; that is, execution within a layer.
+.PP
+.TP 6
+\fB\-c\fR
+Suppress the link-editing phase of the compilation, and force
+an object file to be produced even if only one program is compiled.
+.PP
+.TP 6
+\fB\-g\fR
+Flag to the compiler to produce additional information needed for the
+use of
+.IR dmdebug (1).
+\}
+.PP
+.TP 6
+\fB\-O\fR
+Invoke an object-code optimizer.
+The optimizer will move, merge, and delete code; so symbolic debugging with
+line numbers could be confusing when the optimizer is used.
+.PP
+.TP 6
+\fB\-OA\fR
+Optimize assembly.
+Invoke the object code optimizer for a 
+.B .c
+source file which
+contains assembler escapes.  Use this flag at your own risk.
+The optimizer does not recognize all \*P assembly language instructions.
+.PP
+.TP 6
+\fB\-W\fIc\fB,\fRarg1[\fB,\fRarg2...]
+Hand off the argument[s]
+to pass
+.I c
+where
+.I c
+is one of
+.RB [ p012al ]
+indicating preprocessor,
+compiler first pass,
+compiler second pass,
+optimizer,
+assembler,
+or link editor, respectively. For example:
+.RS 6
+.ce
+.B \-Wa,\-m
+.br
+invokes the \f2m4\f1 macro preprocessor on the input to the assembler.
+.RE
+.PP
+.TP 6
+\fB\-S\fR
+Compile the named C programs, and leave the
+assembler-language output on corresponding files suffixed
+.BR .s .
+.PP
+.TP 6
+\fB\-P\fR
+Run only the macro preprocessor
+on the named C programs, and leave the output on corresponding
+files suffixed
+.BR .i .
+.TP 6
+\fB\-E\fR
+Same as the
+.B \-P
+option except the output is directed to the standard output.
+This allows the preprocessor to be used as a filter for
+any other compiler.
+.PP
+.TP 6
+\fB\-V\fR
+Print the version of the DMD compiler, optimizer,
+assembler, or link-editor that is invoked.
+.PP
+.TP 6
+\fB\-D\fR
+Define
+.I symbol
+to the preprocessor.
+This mechanism is useful with the
+conditional statements in the preprocessor
+by allowing symbols to be defined external to the source file.
+.PP
+.TP 6
+\fB\-U\fR
+Undefine 
+.I symbol
+to the preprocessor.
+.PP
+.TP 6
+\fB\-I\fR
+Change the algorithm for searching for
+.BR #include
+files whose names do not begin with
+.B /
+to look in
+.I dir
+before looking in the directories on the standard list.
+Thus,
+.BR #include
+files whose names are enclosed in \fB""\fR
+will be searched for first in the directory of the
+.I file
+argument, then in directories named in \fB-I\fR options,
+and last in directories on a standard list.
+For
+.BR #include
+files whose names are enclosed in
+.BR <> ,
+the directory of the
+.I file
+argument is not searched.
+.PP
+.DT
+.br
+.DT
+.PP
+Other arguments
+are taken
+to be either link-editor flag arguments, or C-compatible
+object programs, typically produced by an earlier
+.I dmdcc
+run,
+or perhaps libraries of C-compatible routines.
+These programs, together with the results of any
+compilations specified, are link-edited (in the order
+given) to produce an executable program with name
+.B dmda.out
+unless the
+.B \-o
+option of the link-editor is used.
+.PP
+The
+.I dmdcc
+command expects two shell variables to be set and exported in
+the user's environment.  This should be done by your system administrator.
+The variable \fBDMD\fR must point to the "root" directory of the DMD software
+node.  The variable \fBDMDSGS\fR must point to the "root" directory of the
+remainder of the SGS (that is, the compiler, loader, and assembler).
+.SH FILES
+.PD 0
+.TP 22
+file.c
+input file
+.TP 22
+file.o
+object file
+.TP 22
+file.s
+assembly language file
+.TP 22
+m32a.out
+link-edited output
+.TP 22
+/usr/tmp/dmd?
+temporary
+.TP 22
+/lib/cpp
+preprocessor
+.if 'dmd'3b' .nr C 0
+.if \nC \{\
+.TP 22
+LIBDIR/front
+compiler first pass
+.TP 22
+LIBDIR/back
+compiler second pass
+\}
+.if !\nC \{\
+.TP 22
+.ie 'dmd'' /lib/comp
+.el LIBDIR/comp
+compiler
+\}
+.TP 22
+.ie 'dmd'' /lib/optim
+.el LIBDIR/optim
+optimizer
+.TP 22
+.ie 'dmd'' /lib/libc.a
+.el LIBDIR/libc.a
+DMD library
+.DT
+.PD
+.br
+.SH SEE ALSO
+dmdebug(1),
+m32as(1),
+m32cc(1),
+m32dis(1),
+m32ld(1),
+m32list(1).
+.br
+m4(1) in the
+\f2\s-1UNIX\s+1 System V Programmer Reference Manual\f1.
+.br
+.sp
+Kernighan, B. W., and Ritchie, D. M.,
+.IR "The C Programming Language",
+Prentice-Hall, 1978.
+.br
+Kernighan, B. W.,
+.I Programming in C\-A Tutorial.
+.br
+Ritchie, D. M.,
+.I C Reference Manual.
+.br
+.br
+.SH DIAGNOSTICS
+The diagnostics produced by the C compiler are sometimes
+cryptic.
+Occasional messages may be produced by the assembler
+or link-editor.
+
+
