@@ -19,9 +19,6 @@ LDFILE    *ldptr;
 FILHDR    *filehead; 
 
 {
-    extern int		fread( );
-    extern int		fseek( );
-
     extern int		vldldptr( );
 
     if (vldldptr(ldptr) == SUCCESS) {

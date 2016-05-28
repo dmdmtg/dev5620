@@ -39,11 +39,6 @@ char	*message;
 int	level;
 
 {
-    /* UNIX FUNCTIONS CALLED */
-    extern		fprintf( ),
-			fclose( ),
-			free( );
-
     /* COMMON OBJECT FILE ACCESS ROUTINES CALLED */
     extern int		ldaclose( );
 

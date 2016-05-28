@@ -36,10 +36,6 @@ char	*file;
 char	*string;
 
 {
-     /* UNIX FUNCTIONS CALLED */
-    extern	fprintf( ),
-		fflush( );
-
     fflush(stdout);
     fprintf(stderr, "%ssize:  %s:  %s\n", SGS, file, string);
 

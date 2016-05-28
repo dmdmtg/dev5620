@@ -599,9 +599,6 @@ copy(size)
 long	size;
 
 {
-    extern int		fread( ),
-			fwrite( );
-
 	extern FILE	*compress;
 	extern LDFILE	*oldfile;
 

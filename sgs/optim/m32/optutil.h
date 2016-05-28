@@ -44,14 +44,6 @@ extern void lmrgin1();	/* line number info */
 extern void lmrgin2();
 extern void lmrgin3();
 
-/* declare string and other functions that are always handy for optimizations */
-
-extern int strcmp();
-extern char * strcpy();
-extern int strlen();
-extern char * strchr();
-extern long atol();
-
 
 /* declare functions defined in local.c that are handy here */
 

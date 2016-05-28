@@ -48,8 +48,6 @@ static char ID[] = "@(#) getstab.c: 1.4 5/24/83";
  *
  */
 
-extern FILE *fopen();
-
 extern upsymins *lookup();
 
 getstab(file)

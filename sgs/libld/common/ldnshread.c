@@ -21,9 +21,6 @@ char	*sectname;
 SCNHDR	*secthdr; 
 
 {
-    extern int		fseek( );
-    extern int		fread( );
-
     extern int		vldldptr( );
 
     unsigned short	i;

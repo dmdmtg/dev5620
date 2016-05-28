@@ -51,9 +51,6 @@ LDFILE		*ldptr;
 long		fcnindx;
 
 {
-    extern int		fread( );
-    extern int		fseek( );
-
     extern int		ldtbread( );
     extern int		ldshread( );
 
@@ -135,9 +132,6 @@ unsigned short	linenum;
 LINENO		*linent;
 
 {
-    extern int		fread( );
-    extern int		fseek( );
-
     LINENO		line;
     int			lflag;
     unsigned short	i;

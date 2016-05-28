@@ -27,9 +27,7 @@ LDFILE	*ldptr;
 char	*filename;
 
 {
-	extern int	printf( ),
-			fprintf( ),
-			ldahread( );
+	extern int	ldahread( );
 
 	extern char	*ctime( );
 	extern int	vflag;
@@ -143,10 +141,6 @@ LDFILE	*ldptr;
 char	*filename;
 
 {
-    extern int		printf( ),
-			fprintf( ),
-			fread( );
-
     unsigned short	buffer;
     int			i,
 			count;
@@ -280,11 +274,6 @@ LDFILE	*ldptr;
 char	*filename;
 
 {
-	/* FUNCTIONS CALLED */
-	extern int	printf( ),
-			fprintf( ),
-			fread( );
-
 	extern int	ldshread( ),
 			ldnshread( ),
 			ldnsseek( ),
@@ -830,11 +819,7 @@ LDFILE		*ldptr;
 char		*filename;
 
 {
-    extern int		printf( ),
-			fprintf( ),
-			strcmp( ),
-			fread( ),
-			ldtbseek( ),
+    extern int		ldtbseek( ),
 			ldtbread( ),
 			ldlread( ),
 			ldlinit( ),
@@ -1335,10 +1320,7 @@ LDFILE	*ldptr;
 char	*filename;
 
 {
-	extern	int	fread( );
-	extern	char	*calloc( );
 	extern	long	sgetl( );
-	extern	char	*calloc( );
 
 	long		num_syms;
 	char		*offsets;

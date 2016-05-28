@@ -26,9 +26,6 @@ convert( infile )
 
 char	*infile;
 {
-	/* functions called */
-	extern int	fwrite( );
-
 	/* libld functions called */
 	extern LDFILE	*ldaopen( );
 	extern int	ldaclose( ),

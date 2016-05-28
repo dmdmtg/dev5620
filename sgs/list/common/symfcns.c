@@ -72,10 +72,6 @@ findfile(filename)
 char	*filename;
 
 {
-    /* UNIX FUNCTIONS CALLED */
-    extern int		fread( ),
-			strncmp( );
-
     /* OBJECT FILE ACCESS FUNCTION CALLED */
     extern int		ldtbread( );
 

@@ -17,7 +17,6 @@ ldaopen(filename, oldptr)
 	char *filename;
 	LDFILE *oldptr; 
 {
-	extern FILE *fopen();
 	extern int vldldptr();
 	extern LDFILE *allocldptr();
 	extern int freeldptr();

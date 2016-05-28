@@ -27,9 +27,6 @@ int
 ldclose(ldptr)
 	LDFILE *ldptr;
 {
-	extern int fseek();
-	extern int fread();
-	extern int fclose();
 	extern int vldldptr();
 	extern int freeldptr();
 	extern long sgetl();

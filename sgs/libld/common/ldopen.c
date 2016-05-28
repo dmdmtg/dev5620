@@ -29,10 +29,6 @@ ldopen(filename, ldptr)
 	char *filename;
 	LDFILE *ldptr; 
 {
-	extern FILE *fopen();
-	extern int fclose();
-	extern int fseek();
-	extern int fread();
 	extern int vldldptr();
 	extern LDFILE *allocldptr();
 	extern int freeldptr();

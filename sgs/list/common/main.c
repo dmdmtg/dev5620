@@ -68,17 +68,6 @@ int	argc;
 char	**argv;
 
 {
-    /* UNIX FUNCTIONS CALLED */
-    extern	fprintf( );
-#if DMERT
-    extern FILE	*vfopen( );
-#else
-    extern FILE	*fopen( );
-#endif
-    extern	fclose( ),
-		exit( );
-    extern int	fflush( );
-
     /* OBJECT FILE ACCESS FUNCTIONS CALLED */
     extern int	ldaclose( );
 

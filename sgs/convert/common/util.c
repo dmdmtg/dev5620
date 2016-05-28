@@ -414,12 +414,6 @@ char	*filename;
 LDFILE	*ldptr; 
 
 {
-	/* functions called */
-	extern FILE	*fopen( );
-	extern		fclose( );
-	extern int	fseek( );
-	extern int	fread( );
-
 	/* libld functions called */
 	extern int	vldldptr( );
 	extern LDFILE	*allocldptr( );
@@ -678,10 +672,6 @@ NEWARHDR  *arhead;
 	short		tmpshort;
 	char		tmpc;
 
-	/* functions called */
-	extern int	fseek( );
-	extern int	fread( );
-
 	/* libld functions called */
 	extern int	vldldptr( );
 	extern long	sgetl( );
@@ -794,11 +784,6 @@ ldclose(ldptr)
 LDFILE    *ldptr; 
 
 {
-	/* functions called */
-	extern int	fseek( );
-	extern int	fread( );
-	extern 		fclose( );
-
 	/* libld functions called */
 	extern int	vldldptr( );
 	extern int	freeldptr( );

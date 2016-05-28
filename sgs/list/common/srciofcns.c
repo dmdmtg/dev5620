@@ -67,10 +67,6 @@ int
 getline( )
 
 {
-    /* UNIX FUNCTIONS CALLED */
-    extern			printf( );
-    extern char			*fgets( );
-
     /* EXTERNAL VARIABLES USED */
     extern FILE			*srcptr;
     extern char			*objname;

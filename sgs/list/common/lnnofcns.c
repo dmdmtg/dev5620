@@ -106,8 +106,6 @@ unsigned short
 getlnno( )
 
 {
-    extern int		fread( );
-
     extern		error( );
 
     extern LDFILE	*ldptr;

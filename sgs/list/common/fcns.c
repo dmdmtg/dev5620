@@ -34,12 +34,6 @@ char	*file;
 char	*message;
 
 {
-    /* UNIX FUNCTIONS CALLED */
-    extern		fflush( ),
-			fprintf( ),
-			fclose( );
-
-
     /*  because setbuf( ) is used to buffer the standard output and stderr
      *  is used to print error messages, the error messages might appear in an
      *  inappropriate place unless stdout is fflush'd before the error message

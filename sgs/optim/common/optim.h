@@ -102,7 +102,7 @@ extern int fnum;		/* # of this function */
 
 extern NODE *Saveop();
 extern boolean same(), sameaddr();
-extern char *getspace(), *strcpy(), *memcpy(), *xalloc(), *memset();
+extern char *getspace(), *xalloc();
 extern void addref(), fatal(), filter(), init(), optim(), prtext(), xfree();
 
 /* user-supplied functions or macros */

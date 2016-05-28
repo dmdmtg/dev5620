@@ -27,8 +27,6 @@ ldahread(ldptr, arhead)
 	LDFILE *ldptr;
 	ARCHDR *arhead; 
 {
-	extern int fseek();
-	extern int fread();
 	extern long sgetl();
 	extern int vldldptr();
 

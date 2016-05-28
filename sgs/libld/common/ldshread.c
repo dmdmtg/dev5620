@@ -21,9 +21,6 @@ unsigned short	sectnum;
 SCNHDR	*secthdr; 
 
 {
-    extern int		fseek( );
-    extern int		fread( );
-
     extern int		vldldptr( );
 
     if (vldldptr(ldptr) == SUCCESS) {

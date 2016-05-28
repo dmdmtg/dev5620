@@ -94,9 +94,6 @@ int
 cpyscnhdrs( )
 
 {
-    /* UNIX FUNCTIONS CALLED */
-    extern int		fwrite( );
-
     /* COMMON ACCESS ROUTINE CALLED */
     extern int		ldshread( );
 
@@ -210,10 +207,6 @@ long
 copyscns( )
 
 {
-    /* UNIX FUNCTION CALLED */
-    extern int		fseek( );
-    extern int		fwrite( );
-
     /* OBJECT FILE ACCESS ROUTINES CALLED */
     extern int		ldshread( ),
 			ldsseek( );
@@ -385,10 +378,6 @@ long
 cpylnums(fileaddr)
 long	fileaddr;
 {
-	/* UNIX FUNCTIONS CALLED */
-	extern	int	fread( );
-	extern	int	fwrite( );
-
 	/* COMMON OBJECT FILE ACCESS ROUTINES CALLED */
 	extern int	ldlseek();
 	extern int	ldshread();
@@ -461,10 +450,6 @@ int
 copysyms( )
 
 {
-	/* UNIX FUNCTIONS CALLED */
-	extern	int	fread( ),
-			fwrite( );
-
 	/* COMMON OBJECT FILE ACCESS ROUTINES CALLED */
 	extern	int	ldtbseek( );
 #if FLEXNAMES
@@ -614,10 +599,6 @@ copyexts(filename)
 char	*filename;
 
 {
-	/* UNIX FUNCTIONS CALLED */
-	extern	int	fread( ),
-			fwrite( );
-
 	/* COMMON OBJECT FILE ACCESS ROUTINES CALLED */
 	extern	LDFILE	*ldaopen( );
 	extern	int	ldaclose( ),
@@ -925,10 +906,6 @@ docopy(size)
 long	size;
 
 {
-    /* UNIX FUNCTIONS CALLED */
-    extern int		fread( ),
-			fwrite( );
-
     /* EXTERNAL VARIABLES USED */
     extern LDFILE	*ldptr;
     extern FILE		*strp1;
@@ -983,10 +960,6 @@ newreloc(fileaddr)
 long	fileaddr;
 
 {
-
-	/* UNIX FUNCTIONS CALLED */
-	extern	int		fread( ),
-				fwrite( );
 	/* COMMON OBJECT FILE ACCESS ROUTINES CALLED */
 	extern int	ldshread( ),
 			ldrseek( );
@@ -1065,11 +1038,6 @@ newndx(rind)
 register long	rind;
 
 {
-
-	/* UNIX FUNCTIONS CALLED */
-	extern	int		fseek( );
-	extern	int		fread( );
-
 	/* EXTERNAL VARIABLES USED */
 #if AR16WR
 	extern	FILE		*readtmp;
@@ -1126,9 +1094,6 @@ register long	rind;
 TEMPENT *
 getempent()
 {
-	/* UNIX FUNCTIONS CALLED */
-	extern	char	*malloc( );
-
 	/* EXTERNAL VARIABLES USED */
 	extern	TEMPENT	*entptr;
 	extern	TEMPENT	*oldptr;

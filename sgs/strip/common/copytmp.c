@@ -39,10 +39,6 @@ char	*filename;
 FILHDR	*filehead;
 
 {
-    /* UNIX FUNCTIONS CALLED */
-    extern int	fread( ),
-		fwrite( );
-
     /* STRIP FUNCTIONS CALLED */
     extern	ignorsig( ),
 		resetsig( ),

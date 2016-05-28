@@ -75,13 +75,6 @@ process(filename)
 char	*filename;
 
 {
-	/* UNIX FUNCTIONS CALLED */
-	extern	FILE	*fopen( );
-	extern		fclose( ),
-			exit( );
-	extern	int	fseek( );
-	extern	long	ftell( );
-
 	/* COMMON OBJECT FILE ACCESS ROUTINES CALLED */
 	extern	int	ldaclose( );
 
@@ -260,7 +253,6 @@ copyarh(filename, arhead)
 
 /*	UNIX FUNCTIONS CALLED */
 
-	extern	int	fwrite( );
 	extern		sputl( );
 
 /*	STRIP FUNCTIONS CALLED */

@@ -209,9 +209,6 @@ convahdr(ldptr,infile)
 LDFILE	*ldptr;
 char	*infile;
 {
-	/* functions called */
-	extern int	fwrite( );
-
 	/* libld functions called */
 	extern int	ldahread( );
 
@@ -316,7 +313,6 @@ convfhdr(ldptr,infile)
 LDFILE	*ldptr;
 char	*infile;
 {
-	extern int	fwrite( );
 	FILHDR	filehead;
 
 	if (ldfhread(ldptr, &filehead) == SUCCESS) {
@@ -366,7 +362,6 @@ LDFILE	*ldptr;
 char	*infile;
 {
 
-	extern	int	fwrite( );
 	char	*opthead, *tmp;
 	short	magic;
 	int	hdrsize, num;
@@ -474,8 +469,6 @@ convshdr(ldptr,infile)
 LDFILE	*ldptr;
 char	*infile;
 {
-	extern	int	fwrite( );
-
 	int	num;
 	SCNHDR	sechead;
 
@@ -564,8 +557,6 @@ convrel( ldptr, infile )
 LDFILE	*ldptr;
 char	*infile;
 {
-	extern	int	fwrite( );
-
 	int	numsec, numrel;
 	SCNHDR	sechead;
 	RELOC	relentry;
@@ -624,8 +615,6 @@ convline( ldptr, infile )
 LDFILE	*ldptr;
 char	*infile;
 {
-	extern	int	fwrite( );
-
 	int	numsec, numline;
 	SCNHDR	sechead;
 	LINENO	linentry;
@@ -683,8 +672,6 @@ convsyms( ldptr, infile )
 LDFILE	*ldptr;
 char	*infile;
 {
-	extern int	fwrite( );
-
 	long		numsym;
 	unsigned short	type;
 	char		class,

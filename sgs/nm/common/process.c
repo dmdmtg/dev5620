@@ -84,15 +84,6 @@ process(filename)
 char		*filename;
 
 {
-    /* UNIX FUNCTIONS CALLED */
-    extern FILE		*fopen( );
-    extern		fclose( ),
-			fflush( ),
-			fprintf( );
-    extern int		system( );
-    extern		free( ),
-			exit( );
-
     /* COMMON OBJECT FILE ACCESS ROUTINES CALLED */
     extern LDFILE	*ldaopen( );
     extern int		ldaclose( );

@@ -21,9 +21,6 @@ long	symnum;
 SYMENT	*symentry;
 
 {
-    extern int		fseek( );
-    extern int		fread( );
-
     extern int		vldldptr( );
 
     if (vldldptr(ldptr) == SUCCESS) {
