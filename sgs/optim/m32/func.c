@@ -19,10 +19,10 @@
 **	function or more to perform their optimizations.
 */
 
+#include <string.h>
 #include "optim.h"
 #include "optutil.h"
 #include "storclass.h"
-#include <string.h>
 #include "paths.h"
 
 /* Macro to add new instruction:
